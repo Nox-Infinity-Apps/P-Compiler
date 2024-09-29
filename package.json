@@ -12,7 +12,7 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "electron-builder install-app-deps",
-    "pip:install": "pip3 install -r python/requirements.txt --break-system-packages && cd python && poetry install",
+    "pip:install": "pip3 install -r python/requirements.txt --break-system-packages && cd python && poetry env use python3 && poetry install",
     "electron:dist": "electron-builder --dir",
     "electron:dist:deb": "electron-builder --linux deb",
     "electron:dist:win": "electron-builder --win",
