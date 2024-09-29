@@ -5,4 +5,4 @@ class LoginDTO:
     username: str
     password: str
 
-d = new LoginDTO(username="assa",)
+d =  LoginDTO(username="assa",)
