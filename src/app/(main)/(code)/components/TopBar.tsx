@@ -16,7 +16,7 @@ export default function TopBar() {
             setState((pre) => ({
                 ...pre,
                 output: data.data.stdout,
-                err: data.data.stderr,
+                err: data.data.stderr || data.data.compile_output,
             }));
             setTerminalActiveIndex(2);
         },

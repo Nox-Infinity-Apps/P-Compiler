@@ -5,7 +5,7 @@ const axiosCompiler = axios.create({
     headers: {
         "Content-Type": "application/json",
         "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
-        "x-rapidapi-key": "1c63013b55msh7ac7499ed2e71d9p13bde0jsn5ef67917f500",
+        "x-rapidapi-key": "18b2cb6010msh827b46f021b4120p1a1558jsn9911a2afb839",
     },
 });
 
