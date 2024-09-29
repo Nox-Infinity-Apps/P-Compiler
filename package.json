@@ -12,6 +12,7 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "electron-builder install-app-deps",
+    "pip:install": "pip3 install -r requirements.txt --break-system-packages && poetry install",
     "electron:dist": "electron-builder --dir",
     "electron:dist:deb": "electron-builder --linux deb",
     "electron:dist:win": "electron-builder --win",
@@ -22,7 +23,7 @@
     "electron:build_watch": "tsup --watch",
     "electron:dev": "npm-run-all --parallel electron:build_watch electron:watch",
     "electron:watch": "cross-env NODE_ENV='development' nodemon",
-    "fastapi-dev": "pip3 install -r requirements.txt --break-system-packages && python3 -m uvicorn python.index:app --reload"
+    "fastapi-dev": "python3 -m uvicorn python.index:app --reload"
   },
   "dependencies": {
     "@electron-toolkit/utils": "^3.0.0",

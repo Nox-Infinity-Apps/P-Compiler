@@ -14,6 +14,7 @@
 ```bash
 python3 -m venv venv
 source venv/bin/activate 
+yarn run pip:install
 ```
 
 ### Run applications:
