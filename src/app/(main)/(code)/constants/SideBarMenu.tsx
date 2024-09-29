@@ -1,17 +1,18 @@
+"use client";
 import { VscSearch } from "react-icons/vsc";
 import { PiRanking } from "react-icons/pi";
 import { FaBarsStaggered } from "react-icons/fa6";
 import * as React from "react";
-import dynamic from "next/dynamic";
+import { lazy } from "react";
 
-const TabSearch = dynamic(
+const TabSearch = lazy(
     () => import("@/app/(main)/(code)/@tabs/tree/TabSearch"),
 );
-const ProblemTab = dynamic(
+const ProblemTab = lazy(
     () => import("@/app/(main)/(code)/@tabs/problems/ProblemTab"),
 );
 
-const SearchTab = dynamic(
+const SearchTab = lazy(
     () => import("@/app/(main)/(code)/@tabs/search/SearchTab"),
 );
 
