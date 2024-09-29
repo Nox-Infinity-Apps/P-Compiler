@@ -7,7 +7,7 @@
   "private": true,
   "main": "build/main.js",
   "scripts": {
-    "next:dev": "next dev",
+    "next:dev": "npx concurrently \"next dev\" \"npm run fastapi-dev\"",
     "next:build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -21,7 +21,8 @@
     "dev": "npm-run-all --parallel electron:dev next:dev",
     "electron:build_watch": "tsup --watch",
     "electron:dev": "npm-run-all --parallel electron:build_watch electron:watch",
-    "electron:watch": "cross-env NODE_ENV='development' nodemon"
+    "electron:watch": "cross-env NODE_ENV='development' nodemon",
+    "fastapi-dev": "pip3 install -r requirements.txt --break-system-packages && python3 -m uvicorn python.index:app --reload"
   },
   "dependencies": {
     "@electron-toolkit/utils": "^3.0.0",
