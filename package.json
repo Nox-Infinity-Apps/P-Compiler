@@ -7,7 +7,7 @@
   "private": true,
   "main": "build/main.js",
   "scripts": {
-    "next:dev": "npx concurrently \"next dev\"",
+    "next:dev": "npx concurrently \"next dev\" \"npm run fastapi-dev\"",
     "next:build": "next build",
     "start": "next start",
     "lint": "next lint",
