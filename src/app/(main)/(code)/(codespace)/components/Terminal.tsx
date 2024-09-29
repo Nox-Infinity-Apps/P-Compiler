@@ -5,9 +5,15 @@ import useMainState from "@/recoil/MainState";
 import { useEffect, useLayoutEffect } from "react";
 import useIsElectron from "@/shared/hooks/useIsElectron";
 import { XTerm } from "xterm-for-react";
+import { TERMINAL_TABS } from "@/app/(main)/(code)/constants/TerminalMenu";
 
 const Terminal = React.memo(() => {
-    const { state, handleCloseTerminal, handleOpenTerminal } = useMainState();
+    const {
+        state,
+        handleCloseTerminal,
+        handleOpenTerminal,
+        setTerminalActiveIndex,
+    } = useMainState();
     const isElectron = useIsElectron();
     const xtermRef = React.useRef<XTerm>(null);
     const [input, setInput] = React.useState("");
@@ -60,8 +66,14 @@ const Terminal = React.memo(() => {
         <div className="bg-top-bar h-full border-t-[0.5px] border-t-gray-600 flex flex-col">
             <div className="px-4 py-2 flex items-center justify-between">
                 <div className="flex flex-row gap-x-6 items-center [&>button]:uppercase [&>button]:text-gray-400 [&>button:hover]:text-gray-100 text-xs">
-                    <button>Terminal</button>
-                    <button>Submissions</button>
+                    {TERMINAL_TABS.map((e, index) => (
+                        <button
+                            onClick={() => setTerminalActiveIndex(index)}
+                            key={e.title}
+                        >
+                            {e.title}
+                        </button>
+                    ))}
                 </div>
                 <div className="flex flex-row items-center [&>button]:uppercase [&>button]:text-gray-400 [&>button:hover]:text-gray-100 text-xs">
                     <button onClick={handleCloseTerminal}>
@@ -70,33 +82,40 @@ const Terminal = React.memo(() => {
                 </div>
             </div>
             <div className="grow px-6">
-                <XTerm
-                    options={{
-                        fontSize: 14,
-                        allowTransparency: true,
-                        theme: {
-                            background: "transparent",
-                        },
-                        windowOptions: {},
-                    }}
-                    onData={(data) => {
-                        const code = data.charCodeAt(0);
-                        if (code === 13 && input.length > 0) {
-                            xtermRef.current?.terminal.write(
-                                "\r\nYou typed: '" + input + "'\r\n",
-                            );
-                            xtermRef.current?.terminal.write("echo> ");
-                            setInput("");
-                            console.log("enter", input);
-                        } else if (code < 32 || code === 127) {
-                            setInput((pre) => pre.substring(0, pre.length - 1));
-                        } else {
-                            xtermRef.current?.terminal.write(data);
-                            setInput(input + data);
-                        }
-                    }}
-                    ref={xtermRef}
-                />
+                {TERMINAL_TABS[state[0].terminalActiveIndex]?.component !=
+                null ? (
+                    TERMINAL_TABS[state[0].terminalActiveIndex].component
+                ) : (
+                    <XTerm
+                        options={{
+                            fontSize: 14,
+                            allowTransparency: true,
+                            theme: {
+                                background: "transparent",
+                            },
+                            windowOptions: {},
+                        }}
+                        onData={(data) => {
+                            const code = data.charCodeAt(0);
+                            if (code === 13 && input.length > 0) {
+                                xtermRef.current?.terminal.write(
+                                    "\r\nYou typed: '" + input + "'\r\n",
+                                );
+                                xtermRef.current?.terminal.write("echo> ");
+                                setInput("");
+                                console.log("enter", input);
+                            } else if (code < 32 || code === 127) {
+                                setInput((pre) =>
+                                    pre.substring(0, pre.length - 1),
+                                );
+                            } else {
+                                xtermRef.current?.terminal.write(data);
+                                setInput(input + data);
+                            }
+                        }}
+                        ref={xtermRef}
+                    />
+                )}
             </div>
         </div>
     );

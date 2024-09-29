@@ -7,6 +7,7 @@ const { persistAtom } = recoilPersist();
 const def = {
     isOpenTerminal: true,
     sideBarActiveIndex: -1,
+    terminalActiveIndex: -1,
 };
 
 export const mainState = atom<typeof def>({
@@ -42,10 +43,21 @@ export default function useMainState() {
         [state],
     );
 
+    const setTerminalActiveIndex = React.useCallback(
+        (i: number) => {
+            state[1]((pre) => ({
+                ...pre,
+                terminalActiveIndex: i,
+            }));
+        },
+        [state],
+    );
+
     return {
         state,
         handleCloseTerminal,
         handleOpenTerminal,
         setSidebarActiveIndex,
+        setTerminalActiveIndex,
     };
 }

@@ -5,10 +5,12 @@ import Editor, { useMonaco } from "@monaco-editor/react";
 import { useEffect } from "react";
 import { useMonacoEx } from "monaco-editor-ex";
 import useEditorState from "@/recoil/EditorState";
+import useCodeState from "@/recoil/CodeState";
 
 export default function Page() {
     const monaco = useMonaco();
     const [editorState] = useEditorState();
+    const [state, setState] = useCodeState();
 
     useEffect(() => {
         if (monaco) {
@@ -33,6 +35,10 @@ export default function Page() {
 
     return (
         <Editor
+            onChange={(e) => {
+                setState((pre) => ({ ...pre, source: e || "" }));
+            }}
+            value={state.source}
             theme="vscode-ptit"
             height="100%"
             defaultLanguage="python"

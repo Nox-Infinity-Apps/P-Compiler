@@ -11,12 +11,12 @@ class DependencyManager:
 
 dependency_manager = DependencyManager()
 
-def Injectable(cls):
+def injectable(cls):
     dependency_manager.register(cls)
     return cls
 
 
-def Inject(service_class):
+def inject(service_class):
     def wrapper(func):
         def inner(self, *args, **kwargs):
             service_instance = dependency_manager.get(service_class)

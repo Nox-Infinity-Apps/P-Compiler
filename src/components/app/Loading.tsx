@@ -1,12 +1,12 @@
 import * as React from "react";
 import { motion } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useLayoutEffect } from "react";
 
 export default function Loading() {
     const loadingRef = useRef<HTMLDivElement>(null);
     const [containerWidth, setContainerWidth] = useState(0);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (loadingRef.current) {
             setContainerWidth(loadingRef.current.clientWidth);
         }
