@@ -13,7 +13,7 @@
 - Install python vendor
 ```bash
 python3 -m venv python/venv
-source venv/bin/activate 
+source venv/bin/activate zzz
 yarn run pip:install
 ```
 
