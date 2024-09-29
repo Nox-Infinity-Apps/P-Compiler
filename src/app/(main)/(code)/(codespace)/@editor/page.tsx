@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useMonacoEx } from "monaco-editor-ex";
 import useEditorState from "@/recoil/EditorState";
 import useCodeState from "@/recoil/CodeState";
+import languageCodes from "@/app/(main)/(code)/constants/Languages";
 
 export default function Page() {
     const monaco = useMonaco();
@@ -33,6 +34,16 @@ export default function Page() {
         }
     }, [monaco]);
 
+    const lang = React.useMemo(() => {
+        const keys = Object.keys(languageCodes);
+        const inx = keys.findIndex(
+            (i) => (languageCodes as any)[i].code == state.lang,
+        );
+        return keys[inx];
+    }, [state.lang]);
+
+    console.log("ad", lang);
+
     return (
         <Editor
             onChange={(e) => {
@@ -40,9 +51,10 @@ export default function Page() {
             }}
             value={state.source}
             theme="vscode-ptit"
+            key={lang}
             height="100%"
-            defaultLanguage="python"
-            defaultValue="# CODE"
+            defaultLanguage={lang}
+            defaultValue=""
             options={{
                 fontSize: editorState.fontSize,
                 fontFamily: editorState.fontFamily,

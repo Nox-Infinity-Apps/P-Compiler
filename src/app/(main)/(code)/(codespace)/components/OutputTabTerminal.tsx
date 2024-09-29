@@ -10,11 +10,11 @@ export default function OutputTabTerminal() {
             style={{
                 fontFamily: "JetBrains Mono, monospace",
             }}
-            className="w-full h-full relative "
+            className="w-full h-full relative text-[0.85rem]"
         >
             {state.loading && <Loading />}
-            <pre className="text-xs select-text">{state.output}</pre>
-            <pre className="text-xs text-red-500 select-text">{state.err}</pre>
+            <pre className="select-text text-gray-300">{state.output}</pre>
+            <pre className="text-red-500 select-text">{state.err}</pre>
         </div>
     );
 }

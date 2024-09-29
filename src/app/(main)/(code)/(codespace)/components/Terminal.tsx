@@ -65,9 +65,14 @@ const Terminal = React.memo(() => {
     return (
         <div className="bg-top-bar h-full border-t-[0.5px] border-t-gray-600 flex flex-col">
             <div className="px-4 py-2 flex items-center justify-between">
-                <div className="flex flex-row gap-x-6 items-center [&>button]:uppercase [&>button]:text-gray-400 [&>button:hover]:text-gray-100 text-xs">
+                <div className="flex flex-row gap-x-6 items-center [&>button]:uppercase [&>button:hover]:text-gray-100 text-xs">
                     {TERMINAL_TABS.map((e, index) => (
                         <button
+                            className={
+                                index === state[0].terminalActiveIndex
+                                    ? "text-white"
+                                    : "text-gray-400"
+                            }
                             onClick={() => setTerminalActiveIndex(index)}
                             key={e.title}
                         >

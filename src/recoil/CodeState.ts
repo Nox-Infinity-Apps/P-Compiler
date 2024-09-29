@@ -1,5 +1,6 @@
 import { atom, useRecoilState } from "recoil";
 import { recoilPersist } from "recoil-persist";
+import languageCodes from "@/app/(main)/(code)/constants/Languages";
 
 const { persistAtom } = recoilPersist();
 
@@ -8,6 +9,7 @@ const def = {
     output: "",
     err: "",
     loading: false,
+    lang: languageCodes.python.code,
 };
 
 export const codeState = atom<typeof def>({

@@ -7,10 +7,10 @@ import useMainState from "@/recoil/MainState";
 import { useEffect } from "react";
 
 export default function TopBar() {
-    const [{ source }, setState] = useCodeState();
+    const [{ source, lang }, setState] = useCodeState();
     const { setTerminalActiveIndex } = useMainState();
     const { mutate, isPending } = useMutation({
-        mutationFn: async () => compileCode(source, 71),
+        mutationFn: async () => compileCode(source, lang),
         mutationKey: ["COMPILE"],
         onSuccess: (data) => {
             setState((pre) => ({
