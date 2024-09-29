@@ -30,9 +30,12 @@ const Terminal = React.memo(() => {
     };
 
     useLayoutEffect(() => {
-        window.electron.terminal.onTerminalOutput((event: any, data: any) => {
-            xtermRef.current?.terminal.write(data);
-        });
+        if (isElectron)
+            window.electron.terminal.onTerminalOutput(
+                (event: any, data: any) => {
+                    xtermRef.current?.terminal.write(data);
+                },
+            );
     }, []);
 
     React.useEffect(() => {
