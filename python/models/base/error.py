@@ -19,6 +19,8 @@ def ok(msg):
 def bad_request(msg):
     return CommonError(400, "invalid argument", msg)
 
+def unauthorize(msg):
+    return CommonError(401, "unauthorize", msg)
 
 def not_found(msg):
     return CommonError(404, "not found", msg)
