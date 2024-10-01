@@ -27,14 +27,13 @@ class FailedResponse(BaseResponse):
     status: Literal['failed'] = 'failed'
 
 
-# Hàm trả về JSONResponse
 def Success[T](message: str, data: T) -> JSONResponse:
     return JSONResponse(
         status_code=status.HTTP_200_OK,
         content=SuccessResponse(
             message=message,
             data=data
-        ).dict()  # Chuyển đổi đối tượng thành dict
+        ).dict()
     )
 
 
