@@ -24,10 +24,11 @@ class LoginService:
         csrf_token = soup.select("form.login__main__form input[name=_token]")[0].get("value")
         login = cclient.post("/login", data={
             "_token": csrf_token,
-            username: username,
-            password: password
+            "username": username,
+            "password": password
         })
-        if 'Location' in login.headers and login.headers.get("Location") == "https://code.ptit.edu.vn/home":
+        print(login.request.content)
+        if 'location' in login.headers and 'login' not in login.headers.get("location"):
             return jwt.encode({
                 'username': username,
                 'cookie': cookie,
