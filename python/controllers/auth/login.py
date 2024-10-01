@@ -12,7 +12,7 @@ class LoginController:
 
     def loginWithCredentials(self, body: LoginDTO):
         data = self.service.login(body.username, body.password)
-        return {"token": data.get("token")}
+        return {"token": data}
 
 
 loginController = LoginController()

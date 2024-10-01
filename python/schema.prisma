@@ -26,3 +26,9 @@ model Post {
   author_id  String?
 }
 
+model RapidAPIKey{
+  id Int @id @default(autoincrement())
+  key String @unique
+  is_expired Boolean @default(false)
+}
+

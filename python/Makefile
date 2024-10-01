@@ -3,6 +3,9 @@
 install:
 	poetry install
 
+prisma-push:
+	poetry run prisma db push
+
 run:
 	poetry run uvicorn index:app --reload
 

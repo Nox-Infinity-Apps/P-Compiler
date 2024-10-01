@@ -1,21 +1,25 @@
+from contextlib import asynccontextmanager
+
 import uvicorn
 from fastapi import FastAPI
 from prisma import Prisma
 
 from config.index import settings
 from routes.index import router
+from utils.env import environment
 
 app = FastAPI(docs_url="/api/py/docs", openapi_url="/api/py/openapi.json")
-prisma = Prisma(auto_register=True)
+prisma = Prisma(auto_register=False)
 
 
-@app.on_event('startup')
-async def startup() -> None:
-    await prisma.connect()
+@asynccontextmanager
+async def prisma_starter():
 
+    if not prisma.is_connected():
+        await prisma.connect()
 
-@app.on_event('shutdown')
-async def shutdown() -> None:
+    yield
+
     if prisma.is_connected():
         await prisma.disconnect()
 
@@ -23,4 +27,4 @@ async def shutdown() -> None:
 app.include_router(router)
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=settings.APP_PORT, host=settings.APP_HOST, reload=True)
+    uvicorn.run("index:app", port=environment.port, host=settings.APP_HOST, reload=True)

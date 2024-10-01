@@ -16,6 +16,8 @@ beautifulsoup4 = "^4.12.3"
 dependency-injector = "^4.42.0"
 pydantic = "^2.9.2"
 prisma = "^0.15.0"
+pyjwt = "^2.9.0"
+python-dotenv = "^1.0.1"
 
 
 [build-system]
