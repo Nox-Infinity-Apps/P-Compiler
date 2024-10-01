@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from pydantic import BaseModel
 
-from python.models.base.error import CommonError
+from models.base.error import CommonError
 
 
 @dataclass

@@ -23,7 +23,7 @@
     "electron:build_watch": "tsup --watch",
     "electron:dev": "npm-run-all --parallel electron:build_watch electron:watch",
     "electron:watch": "cross-env NODE_ENV='development' nodemon",
-    "fastapi-dev": "python3 -m uvicorn python.index:app --reload"
+    "fastapi-dev": "cd python && poetry run uvicorn index:app --reload"
   },
   "dependencies": {
     "@electron-toolkit/utils": "^3.0.0",

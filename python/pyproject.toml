@@ -15,8 +15,10 @@ pydantic-settings = "^2.5.2"
 beautifulsoup4 = "^4.12.3"
 dependency-injector = "^4.42.0"
 pydantic = "^2.9.2"
+prisma = "^0.15.0"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+

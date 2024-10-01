@@ -1,4 +1,4 @@
-from python.common.di.manager import injectable, inject
+from common.di.manager import injectable, inject
 
 
 @injectable

@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from python.controllers.auth.login import loginController
-from python.dtos.auth.login import LoginDTO
+from controllers.auth.login import loginController
+from dtos.auth.login import LoginDTO
 
 router = APIRouter(
     prefix="/auth"
