@@ -16,5 +16,10 @@ class UserController:
             return Failed(message="Failed to get user detail")
         return Success(message="Success", data=data)
 
+    def getRank(self,course, payload):
+        data = self.service.getRank(course,payload)
+        if data is None:
+            return Failed(message="Failed to get rank")
+        return Success(message="Success", data=data)
 
 userController = UserController()

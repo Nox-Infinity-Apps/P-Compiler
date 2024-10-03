@@ -10,3 +10,7 @@ router = APIRouter(
 @router.get("/")
 async def getDetail(payload: Dict = Depends(parse_jwt)):
     return userController.getUserDetail(payload)
+
+@router.get("/rank/{course}")
+async def getRank(course: str, payload: Dict = Depends(parse_jwt)):
+    return userController.getRank(course, payload)

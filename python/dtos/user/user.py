@@ -14,3 +14,16 @@ class UserData:
     phone: str
     description: str
 
+@dataclass
+class RankData:
+    stt : str
+    image : str
+    account : str
+    userFirstName : str
+    userLastName : str
+    course : str
+    class_ : str
+    ac : str
+    tried : str
+
+
