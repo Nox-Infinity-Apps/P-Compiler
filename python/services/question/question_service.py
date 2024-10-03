@@ -65,3 +65,21 @@ class QuestionService:
             print(
                 f"Status: {question.status}, Code: {question.code}, Name: {question.name}, Group: {question.group}, Topic: {question.topic}, Level: {question.level}")
         return questions
+
+    def get_detail(self, code: str, payload: dict) -> Union[str | None]:
+        response = cclient.get("/student/question/" + code, headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+            "Cookie": payload["cookie"],
+        })
+        soup = BeautifulSoup(response.text, 'html.parser')
+        # Tìm tất cả các thẻ HTML có class 'submit__nav', 'submit__des', 'submit__req'
+        elements = soup.find_all(class_=["submit__nav", "submit__des", "submit__req"])
+
+        # Tạo một div mới để bọc tất cả các thẻ đã tìm thấy
+        wrapper_div = soup.new_tag('div')
+
+        for element in elements:
+            wrapper_div.append(element)
+
+        # Trả về nội dung của div đã bọc
+        return str(wrapper_div)

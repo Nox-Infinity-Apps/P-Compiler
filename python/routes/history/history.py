@@ -13,3 +13,7 @@ router = APIRouter(
 @router.get("/")
 async def getHistory(payload: Dict = Depends(parse_jwt)):
     return historyController.getAllHistory(payload)
+
+@router.get("/{id}")
+async def getHistoryDetail(id: str, payload: Dict = Depends(parse_jwt)):
+    return historyController.getHistoryDetail(id, payload)

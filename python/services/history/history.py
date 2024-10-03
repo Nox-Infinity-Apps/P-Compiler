@@ -1,3 +1,4 @@
+import html
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Union, List
@@ -58,3 +59,25 @@ class HistoryService:
             ))
 
         return history_data
+
+    def getHistoryDetail(self, id, payload) -> Union[str, None]:
+        response = cclient.get(f"/student/solution/{id}/edit", headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+            "Cookie": payload["cookie"],
+        })
+        soup = BeautifulSoup(response.text, 'html.parser')
+
+        # Find the input element with id "source_code"
+        input_element = soup.find('input', id='source_code')
+
+        if input_element:
+            # Extract the value of the input element
+            raw_code = input_element.get('value')
+
+            # Decode the HTML entities back to their original characters
+            formatted_code = html.unescape(raw_code).replace(r'\r\n', '\n')
+
+            # Output the resulting formatted code
+            return formatted_code
+        else:
+            return None

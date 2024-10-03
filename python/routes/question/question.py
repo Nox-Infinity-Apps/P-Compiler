@@ -12,3 +12,7 @@ router = APIRouter(
 @router.get("")
 async def question(course: int, payload: Dict = Depends(parse_jwt)):
     return questionController.getList(course, payload)
+
+@router.get("/{code}")
+async def questionDetail(code: str, payload: Dict = Depends(parse_jwt)):
+    return questionController.getDetail(code, payload)

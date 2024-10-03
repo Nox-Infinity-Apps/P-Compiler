@@ -18,5 +18,12 @@ class HistoryController:
             return Failed(message="Failed to get history data")
         return Success(message="Success", data=data)
 
+    def getHistoryDetail(self, id, payload):
+        data = self.service.getHistoryDetail(id, payload)
+        if data is None:
+            return Failed(message="Failed to get history detail")
+        return Success(message="Success", data=data)
+
+
 
 historyController = HistoryController()
