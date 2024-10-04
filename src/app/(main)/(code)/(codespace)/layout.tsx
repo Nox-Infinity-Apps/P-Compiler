@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import TopBar from "@/app/(main)/(code)/(codespace)/components/TopBar";
-import Terminal from "@/app/(main)/(code)/(codespace)/components/Terminal";
 import {
     ResizableHandle,
     ResizablePanel,
@@ -10,10 +9,16 @@ import {
 } from "@/components/ui/resizable";
 import useMainState from "@/recoil/MainState";
 import { useLocalStorage } from "@uidotdev/usehooks";
+import dynamic from "next/dynamic";
 
 type Props = {
     editor: React.ReactNode;
 };
+
+const Terminal = dynamic(
+    () => import("@/app/(main)/(code)/(codespace)/components/Terminal"),
+    { ssr: false },
+);
 
 export default function Layout({
     children,
