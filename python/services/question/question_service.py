@@ -1,5 +1,6 @@
+import logging
 from dataclasses import dataclass
-from typing import Union, List
+from typing import Union
 from bs4 import BeautifulSoup
 
 from common.di.manager import injectable, inject
@@ -23,7 +24,51 @@ class QuestionService:
     def __init__(self, env: Environment):
         self.env = env
 
-    def get_list_by_course(self, course: int, payload: dict) -> Union[list[Question] | None]:
+    def get_submit_token(self, code: str, payload: dict):
+        question_html = cclient.get("/student/question/" + code,
+                                    headers={
+                                        "Cookie": payload.get("cookie"),
+                                        "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Mobile Safari/537.36"
+                                    })
+        form = BeautifulSoup(question_html.text, "html.parser").select_one(
+            "div.container-fluid > div.wrapper > div.main--fluid > div.submit.student__submit > div.submit__pad > form")
+
+        hidden = form.find("input", {"name": "_token"})
+        _token = hidden['value'] if hidden else None
+
+        if _token is None:
+            return None
+        return _token
+
+    def submit_code(self, code: str, file, lang: int, payload: dict) -> Union[bool, None]:
+        _token = self.get_submit_token(code, payload)
+        if _token is None:
+            return False
+        print(_token)
+        form_data = {
+            "_token": _token,
+            "question": code,
+            "compiler": lang,
+        }
+
+        files = {
+            "code_file": (file.filename, file.file, file.content_type)
+        }
+        print("Form data:", form_data)
+
+        resp = cclient.post("/student/solution",
+                            headers={
+                                "Cookie": payload.get("cookie"),
+                                "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Mobile Safari/537.36",
+                                "Content-Type": "multipart/form-data"
+                            },
+                            data=form_data,
+                            files=files)
+
+        print(resp.status_code)
+        return False
+
+    def get_list_by_course(self, course: int, page: int, payload: dict) -> Union[list[Question] | None]:
         call = cclient.get("/student/question",
                            headers={
                                "Cookie": payload.get("cookie"),
@@ -36,6 +81,9 @@ class QuestionService:
                                headers={
                                    "Cookie": payload.get("cookie"),
                                    "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Mobile Safari/537.36"
+                               },
+                               params={
+                                   "page": page
                                })
         soup = BeautifulSoup(response.text, 'html.parser')
         tbody = soup.select_one(
