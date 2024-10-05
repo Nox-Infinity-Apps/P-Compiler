@@ -15,5 +15,5 @@ async def question(course: int, page: int, payload: Dict = Depends(parse_jwt)):
 
 
 @router.post("/submit/{code}")
-async def submit_question(code: str, lang: int, file: UploadFile = File(...), payload: Dict = Depends(parse_jwt)):
-    return questionController.submit(file, code, lang, payload)
+async def submit_question(code: str, lang: int, file: UploadFile, payload: Dict = Depends(parse_jwt)):
+    return await questionController.submit(file, code, lang, payload)

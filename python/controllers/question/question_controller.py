@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import List
 
+from fastapi import UploadFile
+
 from common.di.manager import inject
 from dtos.auth.login import LoginDTO
 from models.response.template import Unauthorized, Success, BadRequest
@@ -19,8 +21,8 @@ class QuestionController:
         data = self.service.get_list_by_course(course, page, payload)
         return Success("success", data=data)
 
-    def submit(self, file, code: str, lang: int, payload: dict):
-        sub = self.service.submit_code(code, file, lang, payload)
+    async def submit(self, file: UploadFile, code: str, lang: int, payload: dict):
+        sub = await self.service.submit_code(code, file, lang, payload)
         if sub is not True or sub is None:
             return BadRequest("fail", "400")
 
