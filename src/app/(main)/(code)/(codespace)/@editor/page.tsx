@@ -7,59 +7,42 @@ import { useMonacoEx } from "monaco-editor-ex";
 import useEditorState from "@/recoil/EditorState";
 import useCodeState from "@/recoil/CodeState";
 import languageCodes from "@/app/(main)/(code)/constants/Languages";
+import useCodePTITState from "@/recoil/CodePTITState";
+import useProblemTabState from "@/recoil/TabState";
+import {
+    ResizableHandle,
+    ResizablePanel,
+    ResizablePanelGroup,
+} from "@/components/ui/resizable";
+import { cn } from "@/lib/utils";
+import SideBarContent from "@/app/(main)/(code)/components/SideBarContent";
+import VsCodeEditor from "@/app/(main)/(code)/(codespace)/@editor/components/VSCodeEditor";
+import ProblemInfo from "@/app/(main)/(code)/(codespace)/@editor/components/ProblemInfo";
 
 export default function Page() {
     const monaco = useMonaco();
     const [editorState] = useEditorState();
     const [state, setState] = useCodeState();
+    const [codePTITState] = useCodePTITState();
+    const [problemState] = useProblemTabState();
 
-    useEffect(() => {
-        if (monaco) {
-            // eslint-disable-next-line react-hooks/rules-of-hooks
-            useMonacoEx(monaco);
-            monaco.editor.defineTheme("vscode-ptit", {
-                base: "vs-dark",
-                inherit: true,
-                rules: [
-                    { token: "comment", foreground: "888888" },
-                    { token: "keyword", foreground: "#c169d8" },
-                    // { token: "string", foreground: "00ff00" },
-                ],
-                colors: {
-                    "editor.background": "#171f2b",
-                },
-            });
-
-            monaco.editor.setTheme("vscode-ptit");
-        }
-    }, [monaco]);
-
-    const lang = React.useMemo(() => {
-        const keys = Object.keys(languageCodes);
-        const inx = keys.findIndex(
-            (i) => (languageCodes as any)[i].code == state.lang,
+    if (problemState.tab.length === 0) {
+        return (
+            <div className="size-full grid place-items-center">
+                <p>No tab</p>
+            </div>
         );
-        return keys[inx];
-    }, [state.lang]);
-
-    console.log("ad", lang);
+    }
 
     return (
-        <Editor
-            onChange={(e) => {
-                setState((pre) => ({ ...pre, source: e || "" }));
-            }}
-            value={state.source}
-            theme="vscode-ptit"
-            key={lang}
-            height="100%"
-            defaultLanguage={lang}
-            defaultValue=""
-            options={{
-                fontSize: editorState.fontSize,
-                fontFamily: editorState.fontFamily,
-                fontWeight: editorState.fontWeight,
-            }}
-        />
+        <ResizablePanelGroup direction="horizontal">
+            <ResizablePanel>
+                <VsCodeEditor index={problemState.activeTab} />
+            </ResizablePanel>
+            <ResizableHandle />
+            <ResizablePanel defaultSize={30}>
+                <ProblemInfo />
+            </ResizablePanel>
+        </ResizablePanelGroup>
     );
 }

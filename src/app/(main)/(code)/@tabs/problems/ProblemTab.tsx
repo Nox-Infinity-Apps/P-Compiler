@@ -14,54 +14,34 @@ import {
 import useProblems from "@/queries/useProblems";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AnimatePresence, motion } from "framer-motion";
-
-const invoices = [
-    {
-        invoice: "INV001",
-        paymentStatus: "Paid",
-        totalAmount: "$250.00",
-        paymentMethod: "Credit Card",
-    },
-    {
-        invoice: "INV002",
-        paymentStatus: "Pending",
-        totalAmount: "$150.00",
-        paymentMethod: "PayPal",
-    },
-    {
-        invoice: "INV003",
-        paymentStatus: "Unpaid",
-        totalAmount: "$350.00",
-        paymentMethod: "Bank Transfer",
-    },
-    {
-        invoice: "INV004",
-        paymentStatus: "Paid",
-        totalAmount: "$450.00",
-        paymentMethod: "Credit Card",
-    },
-    {
-        invoice: "INV005",
-        paymentStatus: "Paid",
-        totalAmount: "$550.00",
-        paymentMethod: "PayPal",
-    },
-    {
-        invoice: "INV006",
-        paymentStatus: "Pending",
-        totalAmount: "$200.00",
-        paymentMethod: "Bank Transfer",
-    },
-    {
-        invoice: "INV007",
-        paymentStatus: "Unpaid",
-        totalAmount: "$300.00",
-        paymentMethod: "Credit Card",
-    },
-];
+import { useCallback } from "react";
+import useCodePTITState from "@/recoil/CodePTITState";
+import useProblemTabState from "@/recoil/TabState";
 
 export default function ProblemTab() {
     const { isLoading, data } = useProblems();
+    const [state] = useCodePTITState();
+    const [, setTabState] = useProblemTabState();
+
+    const newTab = useCallback(
+        (course: string, id: string, name: string) => {
+            setTabState((pre) => ({
+                ...pre,
+                tab: [
+                    ...pre.tab,
+                    {
+                        problemId: id,
+                        problemName: name,
+                        code: "",
+                        courseId: course,
+                    },
+                ],
+                activeTab: pre.tab.length,
+            }));
+        },
+        [setTabState],
+    );
+
     return (
         <TabContainer>
             <TabHeader>Problems</TabHeader>
@@ -78,10 +58,10 @@ export default function ProblemTab() {
                             initial={{
                                 opacity: 0,
                             }}
-                            className="flex flex-col gap-y-1 px-2 mt-5"
+                            className="flex flex-col gap-y-1 px-2 mt-5 overflow-y-scroll h-[calc(100vh-3.5rem)]"
                         >
-                            {Array.from({ length:  }).map((e, i) => (
-                                <Skeleton key={i} className="h-10 w-full" />
+                            {Array.from({ length: 50 }).map((e, i) => (
+                                <Skeleton key={i} className="h-5 w-full" />
                             ))}
                         </motion.div>
                     )}
@@ -101,7 +81,7 @@ export default function ProblemTab() {
                             duration: 0.5,
                             ease: "easeInOut",
                         }}
-                        className="px-1 overflow-y-scroll h-screen"
+                        className="px-1 overflow-y-scroll h-[calc(100vh-3.5rem)]"
                     >
                         <Table className="overflow-x-auto text-xs relative">
                             <TableCaption>Bài tập</TableCaption>
@@ -119,6 +99,13 @@ export default function ProblemTab() {
                             <TableBody className="overflow-y-scroll">
                                 {data?.data.map((course) => (
                                     <TableRow
+                                        onClick={() => {
+                                            newTab(
+                                                state.targetCourse,
+                                                course.code,
+                                                course.name,
+                                            );
+                                        }}
                                         className={
                                             course.status === 0
                                                 ? "bg-red-950 hover:bg-red-900"
