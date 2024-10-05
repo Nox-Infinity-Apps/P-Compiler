@@ -1,6 +1,10 @@
+import logging
 from dataclasses import dataclass
-from typing import Union, List
+from typing import Union
+
+import httpx
 from bs4 import BeautifulSoup
+from fastapi import UploadFile
 
 from common.di.manager import injectable, inject
 from utils.env import Environment
@@ -23,7 +27,49 @@ class QuestionService:
     def __init__(self, env: Environment):
         self.env = env
 
-    def get_list_by_course(self, course: int, payload: dict) -> Union[list[Question] | None]:
+    def get_submit_token(self, code: str, payload: dict):
+        question_html = cclient.get("/student/question/" + code,
+                                    headers={
+                                        "Cookie": payload.get("cookie"),
+                                        "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Mobile Safari/537.36"
+                                    })
+        form = BeautifulSoup(question_html.text, "html.parser").select_one(
+            "div.container-fluid > div.wrapper > div.main--fluid > div.submit.student__submit > div.submit__pad > form")
+
+        hidden = form.find("input", {"name": "_token"})
+        _token = hidden['value'] if hidden else None
+        if _token is None:
+            return None
+        return _token
+
+    async def submit_code(self, code: str, file: UploadFile, lang: int, payload: dict) -> Union[bool, None]:
+        content_file = await file.read()
+        _token = self.get_submit_token(code, payload)
+        if _token is None:
+            return False
+
+        form_data = {
+            '_token': _token,
+            'question': code,
+            'compiler': str(lang),
+        }
+        files = {
+            'code_file': (file.filename, content_file, file.content_type)
+        }
+        resp = cclient.post("student/solution",
+                                  headers={
+                                      "Cookie": payload.get("cookie"),
+                                      "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Mobile Safari/537.36"
+                                  },
+                                  data=form_data,
+                                  files=files)
+        print(payload.get("cookie"))
+        print(resp.status_code)
+        if resp.status_code != 302:
+            return False
+        return True
+
+    def get_list_by_course(self, course: int, page: int, payload: dict) -> Union[list[Question] | None]:
         call = cclient.get("/student/question",
                            headers={
                                "Cookie": payload.get("cookie"),
@@ -36,6 +82,9 @@ class QuestionService:
                                headers={
                                    "Cookie": payload.get("cookie"),
                                    "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Mobile Safari/537.36"
+                               },
+                               params={
+                                   "page": page
                                })
         soup = BeautifulSoup(response.text, 'html.parser')
         tbody = soup.select_one(
