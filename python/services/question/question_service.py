@@ -157,7 +157,6 @@ class QuestionService:
                             return solution_response
                     except ValueError as e:
                         print("Không thể parse JSON:", e)
-                        return None
 
             except httpx.RequestError as e:
                 print(f"Lỗi khi gửi yêu cầu: {e}")
