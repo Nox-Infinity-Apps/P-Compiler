@@ -135,11 +135,11 @@ class QuestionService:
         while time.time() - polling_time <= time_out:
             try:
                 response = cclient.post("/api/solution/status",
-                                       headers={
-                                           "Cookie": payload.get("cookie"),
-                                           "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Mobile Safari/537.36"
-                                       },
-                                       json=json)
+                                        headers={
+                                            "Cookie": payload.get("cookie"),
+                                            "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Mobile Safari/537.36"
+                                        },
+                                        json=json)
                 if response.status_code == 200:
                     try:
                         response_data = response.json()
@@ -147,13 +147,13 @@ class QuestionService:
                         solution_response = SolutionResponse.from_json(response_data)
 
                         if solution_response.solutions and (solution_response.solutions[0].result == "AC"
-                                or solution_response.solutions[0].result == "WA"
-                                or solution_response.solutions[0].result == "TLE"
-                                or solution_response.solutions[0].result == "OLE"
-                                or solution_response.solutions[0].result == "IR"
-                                or solution_response.solutions[0].result == "RTE"
-                                or solution_response.solutions[0].result == "CE"
-                                or solution_response.solutions[0].result == "MLE"):
+                                                            or solution_response.solutions[0].result == "WA"
+                                                            or solution_response.solutions[0].result == "TLE"
+                                                            or solution_response.solutions[0].result == "OLE"
+                                                            or solution_response.solutions[0].result == "IR"
+                                                            or solution_response.solutions[0].result == "RTE"
+                                                            or solution_response.solutions[0].result == "CE"
+                                                            or solution_response.solutions[0].result == "MLE"):
                             return solution_response
                     except ValueError as e:
                         print("Không thể parse JSON:", e)
