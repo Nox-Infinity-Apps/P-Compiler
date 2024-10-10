@@ -20,7 +20,7 @@ class Question:
 @dataclass
 class QuestionDetail :
     hmtl : str
-    languagess : List[CourseData]
+    languages : List[CourseData]
 
 
 @injectable
