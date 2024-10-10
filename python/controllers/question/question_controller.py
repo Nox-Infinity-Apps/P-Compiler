@@ -21,9 +21,8 @@ class QuestionController:
         print(data)
         return Success("success", data=data)
 
-    def getDetail(self, code: str, payload: dict):
-        data = self.service.get_detail(code, payload)
-        print(data)
+    def getDetail(self, code: str, payload: dict,course:str):
+        data = self.service.get_detail(code, payload,course)
         return Success("success", data=data)
 
 
