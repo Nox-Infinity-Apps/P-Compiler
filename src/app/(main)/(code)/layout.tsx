@@ -15,6 +15,8 @@ import useIsElectron from "@/shared/hooks/useIsElectron";
 import TopBar from "@/app/(main)/(code)/components/TopBar";
 import useIsMac from "@/shared/hooks/useIsMac";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import useUserInfo from "@/queries/useUserInfo";
+import useCourses from "@/queries/useCourses";
 
 type Props = {
     children: React.ReactNode;
@@ -30,6 +32,8 @@ export default function Layout({ children }: Props) {
     } = useMainState();
     const isElectron = useIsElectron();
     const isMac = useIsMac();
+    useUserInfo();
+    useCourses();
 
     return (
         <QueryClientProvider client={queryClient}>

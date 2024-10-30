@@ -1,0 +1,36 @@
+.link--red{
+    @apply text-white text-xl font-bold;
+}
+
+.submit__nav__left{
+    display: none;
+}
+
+.submit__des{
+
+    @apply mt-5 select-text;
+
+    span{
+        font-family: Arial, Helvetica, sans-serif !important;
+        font-size: 0.9rem !important;
+        color: white!important;
+    }
+
+    img{
+        @apply my-2;
+    }
+
+
+    table{
+        tr {
+            td {
+                border-color: white !important;
+            }
+
+            &:first-child{
+                font-weight: bold;
+            }
+        }
+        @apply my-2;
+    }
+}

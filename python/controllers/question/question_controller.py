@@ -21,6 +21,9 @@ class QuestionController:
         data = self.service.get_list_by_course(course, page, payload)
         return Success("success", data=data)
 
+    def getDetail(self, code: str, payload: dict,course:str):
+        data = self.service.get_detail(code, payload,course)
+        return Success("success", data=data)
     async def submit(self, file: UploadFile, code: str, lang: int, payload: dict):
         sub = await self.service.submit_code(code, file, lang, payload)
         if sub is None:

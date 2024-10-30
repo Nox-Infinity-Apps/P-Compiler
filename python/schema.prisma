@@ -1,6 +1,6 @@
 datasource db {
-  provider = "sqlite"
-  url      = "file:data.db"
+  provider = "postgresql"
+  url      = "postgresql://nox-ota-updates_owner:nkHuzjIAE8B2@ep-divine-art-a1t7s5xy-pooler.ap-southeast-1.aws.neon.tech/nox-ota-updates?sslmode=require"
 }
 
 generator db {
@@ -26,9 +26,8 @@ model Post {
   author_id  String?
 }
 
-model RapidAPIKey{
-  id Int @id @default(autoincrement())
-  key String @unique
+model RapidAPIKey {
+  id         Int     @id @default(autoincrement())
+  key        String  @unique
   is_expired Boolean @default(false)
 }
-

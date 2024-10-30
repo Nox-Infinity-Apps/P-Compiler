@@ -5,6 +5,8 @@ import { IoReorderThreeOutline } from "react-icons/io5";
 import SideBarTopMenu from "@/app/(main)/(code)/components/SideBarTopMenu";
 import useMainState from "@/recoil/MainState";
 import { MENU } from "@/app/(main)/(code)/constants/SideBarMenu";
+import useUserInfo from "@/queries/useUserInfo";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import useIsElectron from "@/shared/hooks/useIsElectron";
 
 export default function SideBar({
@@ -15,6 +17,9 @@ export default function SideBar({
         state: [{ sideBarActiveIndex }],
         setSidebarActiveIndex,
     } = useMainState();
+
+    const { data } = useUserInfo();
+    const isElectron = useIsElectron();
 
     return (
         <div
@@ -53,6 +58,14 @@ export default function SideBar({
                     </div>
                 ))}
             </div>
+            <div className="grow" />
+            {!isElectron && (
+                <img
+                    alt=""
+                    src={data?.data.image}
+                    className="w-[50%] rounded-full aspect-square"
+                />
+            )}
         </div>
     );
 }
