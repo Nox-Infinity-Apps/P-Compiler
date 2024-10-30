@@ -23,7 +23,7 @@ class QuestionController:
 
     async def submit(self, file: UploadFile, code: str, lang: int, payload: dict):
         sub = await self.service.submit_code(code, file, lang, payload)
-        if sub is not True or sub is None:
+        if sub is None:
             return BadRequest("fail", "400")
 
         return Success("success", data=sub)
