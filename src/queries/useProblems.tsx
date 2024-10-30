@@ -16,7 +16,7 @@ export default function useProblems() {
     return useQuery({
         queryFn: async () => {
             const data = await axiosAPI.get<Result<Response>>(
-                `/question?course=${state.targetCourse}`,
+                `/question?course=${state.targetCourse}&page=1`,
             );
             return data.data;
         },

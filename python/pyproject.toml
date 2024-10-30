@@ -18,6 +18,7 @@ pydantic = "^2.9.2"
 prisma = "^0.15.0"
 pyjwt = "^2.9.0"
 python-dotenv = "^1.0.1"
+python-multipart = "^0.0.12"
 
 
 [build-system]

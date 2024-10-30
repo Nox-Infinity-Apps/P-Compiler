@@ -54,7 +54,7 @@ export default function VsCodeEditor({ index }: Props) {
                     return { ...pre, tab: [...pre.tab] };
                 });
             }}
-            value={problemState.tab[problemState.activeTab].code}
+            value={problemState.tab[problemState.activeTab]?.code}
             theme="vscode-ptit"
             key={lang}
             height="100%"

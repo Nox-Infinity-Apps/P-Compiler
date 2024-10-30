@@ -14,7 +14,7 @@ type TabStateI = {
 };
 
 export const tabState = atom<TabStateI>({
-    key: "tabState",
+    key: "problemState",
     default: {
         tab: [],
         activeTab: 0,

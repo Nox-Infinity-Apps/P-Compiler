@@ -2,20 +2,18 @@
 
 import * as React from "react";
 import Editor, { useMonaco } from "@monaco-editor/react";
-import { useEffect } from "react";
-import { useMonacoEx } from "monaco-editor-ex";
 import useEditorState from "@/recoil/EditorState";
 import useCodeState from "@/recoil/CodeState";
-import languageCodes from "@/app/(main)/(code)/constants/Languages";
 import useCodePTITState from "@/recoil/CodePTITState";
 import useProblemTabState from "@/recoil/TabState";
+import image from "@/assets/VSCode-Thick.png";
+import Image from "next/image";
+
 import {
     ResizableHandle,
     ResizablePanel,
     ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { cn } from "@/lib/utils";
-import SideBarContent from "@/app/(main)/(code)/components/SideBarContent";
 import VsCodeEditor from "@/app/(main)/(code)/(codespace)/@editor/components/VSCodeEditor";
 import ProblemInfo from "@/app/(main)/(code)/(codespace)/@editor/components/ProblemInfo";
 
@@ -28,8 +26,8 @@ export default function Page() {
 
     if (problemState.tab.length === 0) {
         return (
-            <div className="size-full grid place-items-center">
-                <p>No tab</p>
+            <div className="select-none size-full grid place-items-center">
+                <Image width={300} src={image} alt="VSCode" />
             </div>
         );
     }
