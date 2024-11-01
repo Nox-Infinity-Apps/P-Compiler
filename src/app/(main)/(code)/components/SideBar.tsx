@@ -62,7 +62,7 @@ export default function SideBar({
             {!isElectron && (
                 <img
                     alt=""
-                    src={data?.data.image}
+                    src={data?.data?.image}
                     className="w-[50%] rounded-full aspect-square"
                 />
             )}

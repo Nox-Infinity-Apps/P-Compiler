@@ -27,7 +27,7 @@ export default function ProblemInfo() {
         <div
             className="size-full bg-top-bar p-5 overflow-hidden overflow-y-auto text-xs !font-[Arial] *:text-white"
             dangerouslySetInnerHTML={{
-                __html: String(data?.data.hmtl),
+                __html: String(data?.data?.hmtl),
             }}
         ></div>
     );

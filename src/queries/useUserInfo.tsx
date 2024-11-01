@@ -26,7 +26,8 @@ export default function useUserInfo() {
             } catch (err) {
                 const e = err as AxiosError;
                 if (e.response?.status != 200) {
-                    router.replace("/auth/login");
+                    console.log(e);
+                    // router.replace("/auth/login");
                 }
             }
         },

@@ -87,7 +87,15 @@
     "appId": "com.noxinfinity.pcode",
     "mac": {
       "category": "public.app-category.productivity",
-      "icon": "./icons/icon.icns"
+      "icon": "./icons/icon.icns",
+        "target": [
+          {
+            "target": "dmg",
+            "arch": [
+              "arm64"
+            ]
+          }
+        ]
     },
     "asarUnpack": [
       "node_modules/next",

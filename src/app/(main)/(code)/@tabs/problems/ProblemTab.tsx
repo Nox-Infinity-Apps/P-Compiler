@@ -97,7 +97,7 @@ export default function ProblemTab() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody className="overflow-y-scroll">
-                                {data?.data.map((course) => (
+                                {data?.data?.map((course) => (
                                     <TableRow
                                         onClick={() => {
                                             newTab(

@@ -54,7 +54,7 @@ export default function BottomBar() {
                     value={codeState.targetCourse}
                     className="flex bg-ide_bg items-center text-[0.65rem] rounded-sm px-2 active:outline-none"
                 >
-                    {courses?.data.map((course) => (
+                    {courses?.data?.map((course) => (
                         <option key={course.value} value={course.value}>
                             {course.name}
                         </option>
@@ -84,7 +84,7 @@ export default function BottomBar() {
             </button>
             <button className="flex items-center text-[0.65rem] rounded-sm px-2">
                 <FaUser className="text-[0.7rem]" />
-                {data?.data.username}
+                {data?.data?.username}
             </button>
         </div>
     );
