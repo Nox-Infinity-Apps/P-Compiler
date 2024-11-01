@@ -82,6 +82,7 @@ const languageCodes = {
     java: {
         code: 91,
         title: "Java (JDK 17.0.6)",
+        course: 744,
     },
     javascript: {
         code: 102,
@@ -130,6 +131,7 @@ const languageCodes = {
     python: {
         code: 71,
         title: "Python (3.8.1)",
+        course: 759,
     },
     r: {
         code: 99,

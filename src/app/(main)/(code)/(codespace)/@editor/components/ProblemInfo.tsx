@@ -8,6 +8,7 @@ export default function ProblemInfo() {
     const [problemState] = useProblemTabState();
     const { data, isLoading, isError } = useProblemInfo(
         problemState.tab[problemState.activeTab]?.problemId,
+        problemState.tab[problemState.activeTab]?.courseId,
     );
 
     if (isLoading) {
@@ -24,9 +25,9 @@ export default function ProblemInfo() {
 
     return (
         <div
-            className="size-full bg-top-bar p-5 overflow-y-auto text-xs !font-[Arial] *:text-white"
+            className="size-full bg-top-bar p-5 overflow-hidden overflow-y-auto text-xs !font-[Arial] *:text-white"
             dangerouslySetInnerHTML={{
-                __html: String(data?.data),
+                __html: String(data?.data.hmtl),
             }}
         ></div>
     );

@@ -16,6 +16,8 @@ const SearchTab = lazy(
     () => import("@/app/(main)/(code)/@tabs/search/SearchTab"),
 );
 
+const RankTab = lazy(() => import("@/app/(main)/(code)/@tabs/rank/RankTab"));
+
 const MENU = [
     {
         icon: <VscSearch />,
@@ -25,7 +27,7 @@ const MENU = [
     {
         icon: <PiRanking />,
         onPress: () => {},
-        component: <TabSearch />,
+        component: <RankTab />,
     },
     {
         icon: <FaBarsStaggered />,

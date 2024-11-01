@@ -3,7 +3,7 @@
 import axios from "axios";
 
 const axiosAPI = axios.create({
-    baseURL: "http://localhost:3000/api/py",
+    baseURL: process.env.NEXT_PUBLIC_URL,
 });
 
 axiosAPI.interceptors.request.use(

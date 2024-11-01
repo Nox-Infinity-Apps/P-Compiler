@@ -8,13 +8,31 @@ import useCodeState from "@/recoil/CodeState";
 import useUserInfo from "@/queries/useUserInfo";
 import useCourses from "@/queries/useCourses";
 import useCodePTITState from "@/recoil/CodePTITState";
+import { useEffect } from "react";
 
 export default function BottomBar() {
     const { handleOpenTerminal } = useMainState();
-    const [, setCodeState] = useCodePTITState();
-    const [, setState] = useCodeState();
+    const [codeState, setCodeState] = useCodePTITState();
+    const [state, setState] = useCodeState();
     const { data } = useUserInfo();
     const { data: courses } = useCourses();
+
+    useEffect(() => {
+        const langId = Object.keys(languageCodes).find(
+            (item) =>
+                (languageCodes[item as keyof typeof languageCodes] as any)
+                    ?.course == codeState.targetCourse,
+        );
+        if (langId) {
+            setState((pre) => ({
+                ...pre,
+                lang: (
+                    languageCodes[langId as keyof typeof languageCodes] as any
+                ).code,
+            }));
+        }
+    }, [codeState.targetCourse, setState]);
+
     return (
         <div className="px-2 gap-x-1 [&>button]:gap-x-1.5 translate-y-[100%] py-0.5 md:translate-y-0 flex transition-all duration-100 [&>button]:font-bold [&>button]:text-gray-400 [&>button:hover]:bg-gray-700 ease-in flex-row h-5 border-t-gray-600 border-t-[0.5px] w-full bg-[#1f2939]">
             <button
@@ -33,6 +51,7 @@ export default function BottomBar() {
                             targetCourse: String(e.target.value) || "",
                         }));
                     }}
+                    value={codeState.targetCourse}
                     className="flex bg-ide_bg items-center text-[0.65rem] rounded-sm px-2 active:outline-none"
                 >
                     {courses?.data.map((course) => (
@@ -50,6 +69,7 @@ export default function BottomBar() {
                         lang: Number(event.target.value || 71),
                     }));
                 }}
+                value={state.lang}
                 className="flex bg-ide_bg items-center text-[0.65rem] rounded-sm px-2"
             >
                 {Object.entries(languageCodes).map(([key, value]) => (
