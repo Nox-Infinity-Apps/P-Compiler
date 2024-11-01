@@ -41,9 +41,10 @@ class GeminiService:
         return response.text
 
     def create_history(self, list_chat: List[ChatPart]) -> []:
-        history = []
+        history = default_chat
         for i in list_chat:
             history.append(self.create_chat(i.role, i.parts[0]))
+        print(history)
         return history
 
     def create_chat(self, role: str, msg: str) -> {}:
@@ -53,3 +54,13 @@ class GeminiService:
                 msg
             ],
         }
+
+
+default_chat = [
+    {
+        "role": "user",
+        "parts": [
+            "Từ giờ bạn tên là PCode AI - trợ lý ảo hỗ trợ giải quyết các bài toán, các vấn đề về công nghệ, lập trình"
+        ],
+    },
+]
