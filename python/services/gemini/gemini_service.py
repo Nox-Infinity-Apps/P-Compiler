@@ -8,6 +8,7 @@ from dtos.gemini.gemini_dto import ChatPart
 
 API_KEY = "AIzaSyAJ9NyYmFG3AA5TbgnsQImZF5wujqd_Mew"
 
+
 @injectable
 class GeminiService:
     def send_message(self, code: str, ask_msg: str, chat_history: List[ChatPart]) -> str:
@@ -30,13 +31,16 @@ class GeminiService:
         chat_session = model.start_chat(
             history=self.create_history(chat_history)
         )
-        response = chat_session.send_message("Tôi có đoạn code sau:\n"
-                                             "```\n"+code+"\n```\n"
-                                             +ask_msg)
+        if code is None:
+            response = chat_session.send_message(ask_msg)
+        else:
+            response = chat_session.send_message("Tôi có đoạn code sau:\n"
+                                                 "```\n" + code + "\n```\n"
+                                                 + ask_msg)
 
         return response.text
 
-    def create_history(self,list_chat: List[ChatPart]) -> []:
+    def create_history(self, list_chat: List[ChatPart]) -> []:
         history = []
         for i in list_chat:
             history.append(self.create_chat(i.role, i.parts[0]))
@@ -49,4 +53,3 @@ class GeminiService:
                 msg
             ],
         }
-

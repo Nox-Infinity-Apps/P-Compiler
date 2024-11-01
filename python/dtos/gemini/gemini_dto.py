@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -18,6 +18,6 @@ class ChatPart(BaseModel):
 
 @dataclass
 class MessageRequest(BaseModel):
-    code: str
     ask_msg: str
     chat_history: List[ChatPart]
+    code: Optional[str] = None
