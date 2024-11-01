@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://nox-ota-updates_owner:nkHuzjIAE8B2@ep-divine-art-a1t7s5xy-pooler.ap-southeast-1.aws.neon.tech/nox-ota-updates?sslmode=require"
+  url      = "postgresql://P_Compiler_owner:xhbdOgc31suG@ep-ancient-field-a1vo9414-pooler.ap-southeast-1.aws.neon.tech/P_Compiler?sslmode=require"
 }
 
 generator db {
