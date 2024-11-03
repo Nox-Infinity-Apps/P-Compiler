@@ -13,3 +13,4 @@ class CompileResponse(BaseModel):
     std_err: List[str]
     time:List[str]
     result:  List[bool]
+    description: List[str]

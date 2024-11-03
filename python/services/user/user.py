@@ -59,8 +59,13 @@ class UserService:
         # Parse the HTML
         soup = BeautifulSoup(response.text, 'html.parser')
         # Tìm tất cả các hàng trong bảng
-        rows = soup.find_all('tr', class_='bg--10th')
+        rows = soup.find_all('tr', class_=['bg-100th', 'bg--20th', 'bg--50th'])
+        rows += [
+            tr for tr in soup.find_all('tr')
+            if tr.find_all('td') and tr.find_all('td')[0].get('class') == ['text--middle']
+        ]
         rank_data_list = []
+        print(rows)
         for row in rows:
             cols = row.find_all('td')
             # Lấy dữ liệu từ các cột
