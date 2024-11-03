@@ -65,7 +65,6 @@ class UserService:
             if tr.find_all('td') and tr.find_all('td')[0].get('class') == ['text--middle']
         ]
         rank_data_list = []
-        print(rows)
         for row in rows:
             cols = row.find_all('td')
             # Lấy dữ liệu từ các cột
