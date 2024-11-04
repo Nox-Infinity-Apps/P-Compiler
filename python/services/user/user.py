@@ -30,7 +30,6 @@ class UserService:
         # Lấy tất cả các thẻ li trong profile
         profile_items = soup.find_all('li', class_='profile__item')
 
-        # Giả sử thứ tự đúng như bạn đã đưa ra trong HTML
         account = profile_items[1].find('span').text.strip() if profile_items[1].find('span') else ""
         class_ = profile_items[2].find('span').text.strip() if profile_items[2].find('span') else ""
         email = profile_items[3].find('span').text.strip() if profile_items[3].find('span') else ""
@@ -40,17 +39,16 @@ class UserService:
         phone = profile_items[7].find('span').text.strip() if profile_items[7].find('span') else ""
         description = profile_items[8].find('span').text.strip() if profile_items[8].find('span') else ""
 
-        # Create UserData instance
         user_data = UserData(username, image, account, class_, email, date, gender, location, phone, description)
         return user_data
 
     def getRank(self,course,payload) -> Union[List[RankData], None]:
-        #Change course
+        # Gọi api lần đầu chuyển course
         _ = cclient.get("student/ranking?course="+course, headers={
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
             "Cookie": payload["cookie"],
         })
-        #Call API
+        # Gọi api get rank
         response = cclient.get("student/ranking", headers={
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
             "Cookie": payload["cookie"],

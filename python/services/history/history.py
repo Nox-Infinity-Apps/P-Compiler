@@ -67,17 +67,12 @@ class HistoryService:
         })
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        # Find the input element with id "source_code"
+        # Tim các phần tử input có id là source_code
         input_element = soup.find('input', id='source_code')
 
         if input_element:
-            # Extract the value of the input element
             raw_code = input_element.get('value')
-
-            # Decode the HTML entities back to their original characters
             formatted_code = html.unescape(raw_code).replace(r'\r\n', '\n')
-
-            # Output the resulting formatted code
             return formatted_code
         else:
             return None

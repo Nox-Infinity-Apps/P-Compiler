@@ -1,11 +1,6 @@
 from typing import Union
 
-try:
-    import psycopg2
-    print("psycopg2 is installed.")
-except ModuleNotFoundError:
-    print("psycopg2 is not installed.")
-
+import psycopg2
 from common.di.manager import injectable, inject
 from dtos.compile.compile import CompileResponse, CompileBody
 from utils.env import Environment
@@ -19,14 +14,14 @@ class CompileService:
     def __init__(self, env: Environment):
         self.env = env
 
-    def compile(self, payload, body: CompileBody, id: int) -> Union[CompileResponse, None]:
-
+    def compile(self, payload, body: CompileBody, id: int) -> Union[CompileResponse, None,str]:
+        print(self.env)
         # Thông tin kết nối tới PostgreSQL
         conn = psycopg2.connect(
-            host="ep-ancient-field-a1vo9414.ap-southeast-1.aws.neon.tech",
-            database="P_Compiler",
-            user="P_Compiler_owner",
-            password="xhbdOgc31suG"
+            host=self.env.db_postgres_host,
+            database=self.env.db_postgres_name,
+            user=self.env.db_postgres_user,
+            password=self.env.db_postgres_password,
         )
 
         result: CompileResponse = CompileResponse(std_out=[], std_err=[], time=[], result=[], description=[])
@@ -62,7 +57,6 @@ class CompileService:
                     "stdin": body.inputs[i],
                     "expected_output": body.outputs[i],
                 }
-                print(payload_submit)
 
                 try:
                     # Gọi API
@@ -92,12 +86,10 @@ class CompileService:
                         print(f"Key {api_key} hết hạn")
 
                 except HTTPStatusError as e:
-                    print(f"Lỗi HTTP: {e}")
-                    return None
+                    return f"Lỗi HTTP: {e}"
 
                 except Exception as e:
-                    print(f"Có lỗi xảy ra: {e}")
-                    return None
+                    return f"Có lỗi xảy ra: {e}"
 
         # Đóng kết nối
         cur.close()

@@ -14,8 +14,8 @@ class CompileController:
 
     def compileCode(self, payload, body,id):
         data = self.service.compile(payload,body,id)
-        if data is None:
-            return Failed(message="Failed to compile data")
+        if type(data) == str:
+            return Failed(message=data)
         return Success(message="Success", data=data)
 
 
