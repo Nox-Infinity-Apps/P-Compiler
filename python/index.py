@@ -35,16 +35,16 @@ async def prisma_starter():
         await prisma.disconnect()
 
 
-class PanicHandlerMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request: Request, call_next):
-        try:
-            response = await call_next(request)
-        except Exception as e:
-            return JSONResponse(status_code=500, content={"message": "Internal Server Error"})
-        return response
-
-
-app.add_middleware(PanicHandlerMiddleware)
+# class PanicHandlerMiddleware(BaseHTTPMiddleware):
+#     async def dispatch(self, request: Request, call_next):
+#         try:
+#             response = await call_next(request)
+#         except Exception as e:
+#             return JSONResponse(status_code=500, content={"message": "Internal Server Error"})
+#         return response
+#
+#
+#  app.add_middleware(PanicHandlerMiddleware)
 
 
 app.include_router(router)

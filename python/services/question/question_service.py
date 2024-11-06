@@ -47,7 +47,7 @@ class Solution:
 @dataclass
 class SolutionResponse:
     code: int
-    solutions: List[Solution]  # Chỉnh sửa: đây là danh sách các Solution
+    solutions: List[Solution]
 
     @staticmethod
     def from_json(data: dict) -> 'SolutionResponse':
