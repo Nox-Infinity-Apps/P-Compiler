@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import List
 
 from common.di.manager import inject
 from dtos.gemini.gemini_dto import ChatPart

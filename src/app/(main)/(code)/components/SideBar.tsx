@@ -6,8 +6,22 @@ import SideBarTopMenu from "@/app/(main)/(code)/components/SideBarTopMenu";
 import useMainState from "@/recoil/MainState";
 import { MENU } from "@/app/(main)/(code)/constants/SideBarMenu";
 import useUserInfo from "@/queries/useUserInfo";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import useIsElectron from "@/shared/hooks/useIsElectron";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuPortal,
+    DropdownMenuSeparator,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function SideBar({
     className,
@@ -60,12 +74,44 @@ export default function SideBar({
             </div>
             <div className="grow" />
             {!isElectron && (
-                <img
-                    alt=""
-                    src={data?.data?.image}
-                    className="w-[50%] rounded-full aspect-square"
-                />
+                <UserDropdown>
+                    <img
+                        alt=""
+                        src={data?.data?.image}
+                        className="w-8 h-8 rounded-full aspect-square select-none"
+                    />
+                </UserDropdown>
             )}
         </div>
     );
 }
+
+const UserDropdown = ({ children }: React.PropsWithChildren) => {
+    const router = useRouter();
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56">
+                <DropdownMenuLabel>Tài khoản</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                    <Link
+                        target="_blank"
+                        href="https://code.ptit.edu.vn/user/profile"
+                    >
+                        <DropdownMenuItem>
+                            <span>Thay đổi thông tin</span>
+                        </DropdownMenuItem>
+                    </Link>
+                    <DropdownMenuItem
+                        onClick={() => {
+                            router.push("/auth/login");
+                        }}
+                    >
+                        <span>Đăng xuất</span>
+                    </DropdownMenuItem>
+                </DropdownMenuGroup>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    );
+};

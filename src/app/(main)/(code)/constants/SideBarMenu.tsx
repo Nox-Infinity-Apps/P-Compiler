@@ -4,6 +4,8 @@ import { PiRanking } from "react-icons/pi";
 import { FaBarsStaggered } from "react-icons/fa6";
 import * as React from "react";
 import { lazy } from "react";
+import { SiPytest } from "react-icons/si";
+import Testing from "@/app/(main)/(code)/@tabs/testing/Testing";
 
 const TabSearch = lazy(
     () => import("@/app/(main)/(code)/@tabs/tree/TabSearch"),
@@ -33,6 +35,11 @@ const MENU = [
         icon: <FaBarsStaggered />,
         onPress: () => {},
         component: <ProblemTab />,
+    },
+    {
+        icon: <SiPytest />,
+        onPress: () => {},
+        component: <Testing />,
     },
 ];
 

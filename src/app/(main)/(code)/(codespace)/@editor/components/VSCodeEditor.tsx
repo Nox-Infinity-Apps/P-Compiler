@@ -45,13 +45,17 @@ export default function VsCodeEditor({ index }: Props) {
         return keys[inx];
     }, [state.lang]);
 
+    useEffect(() => {
+        console.log("-", problemState.tab[problemState.activeTab]?.code);
+    }, [problemState.activeTab, problemState.tab]);
+
     return (
         <Editor
             onChange={(e) => {
                 setProblemState((pre) => {
-                    const tab = structuredClone(pre.tab[index]);
-                    tab.code = e || "";
-                    return { ...pre, tab: [...pre.tab] };
+                    const tab = structuredClone(pre.tab);
+                    tab[index].code = e || "";
+                    return { ...pre, tab: tab };
                 });
             }}
             value={problemState.tab[problemState.activeTab]?.code}

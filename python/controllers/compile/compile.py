@@ -1,9 +1,7 @@
-from dataclasses import dataclass
 
 from common.di.manager import inject
 from models.response.template import Success, Failed
 from services.compile.compile import CompileService
-from services.course.course import CourseService
 from utils.singleton import singleton
 
 @singleton

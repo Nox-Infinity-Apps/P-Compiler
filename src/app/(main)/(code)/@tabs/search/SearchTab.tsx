@@ -5,7 +5,7 @@ import TabContainer from "@/app/(main)/(code)/components/TabContainer";
 export default function SearchTab() {
     return (
         <TabContainer>
-            <TabHeader>Search</TabHeader>
+            <TabHeader>Tìm kiếm và thay thế</TabHeader>
         </TabContainer>
     );
 }

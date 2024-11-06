@@ -16,7 +16,6 @@ class CompileService:
 
     def compile(self, payload, body: CompileBody, id: int) -> Union[CompileResponse, None,str]:
         print(self.env)
-        # Thông tin kết nối tới PostgreSQL
         conn = psycopg2.connect(
             host=self.env.db_postgres_host,
             database=self.env.db_postgres_name,
@@ -26,13 +25,10 @@ class CompileService:
 
         result: CompileResponse = CompileResponse(std_out=[], std_err=[], time=[], result=[], description=[])
 
-        # Lặp qua tất cả các input
         for i in range(len(body.inputs)):
-            # Nếu thành công  thì set= True còn khng sẽ ấy key tiếp theo
             success = False
 
             while not success:
-                # Lấy key chưa hết hạn trong DB
                 cur = conn.cursor()
                 cur.execute("SELECT key FROM public.\"RapidAPIKey\" WHERE is_expired = false LIMIT 1")
                 result_key = cur.fetchone()
@@ -80,7 +76,6 @@ class CompileService:
                     else:
                         print(f"Mã lỗi: {response.status_code}")
                         result.result.append(False)
-                        # Nếu mã trạng thái không phải 200 hoặc 201, cập nhật is_expired thành true
                         cur.execute("UPDATE public.\"RapidAPIKey\" SET is_expired = true WHERE key = %s", (api_key,))
                         conn.commit()
                         print(f"Key {api_key} hết hạn")

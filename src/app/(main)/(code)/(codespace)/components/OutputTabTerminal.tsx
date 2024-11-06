@@ -10,7 +10,7 @@ export default function OutputTabTerminal() {
             style={{
                 fontFamily: "JetBrains Mono, monospace",
             }}
-            className="w-full h-full relative text-[0.85rem]"
+            className="w-full h-full relative text-[0.85rem] overflow-scroll"
         >
             {state.loading && <Loading />}
             <pre className="select-text text-gray-300">{state.output}</pre>

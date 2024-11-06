@@ -21,7 +21,7 @@ export default function RankTab() {
 
     return (
         <TabContainer>
-            <TabHeader>RANK</TabHeader>
+            <TabHeader>Bảng xếp hạng</TabHeader>
             <div className="grow overflow-y-scroll">
                 <AnimatePresence>
                     {isLoading && (

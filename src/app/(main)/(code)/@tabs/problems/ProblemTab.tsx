@@ -44,7 +44,7 @@ export default function ProblemTab() {
 
     return (
         <TabContainer>
-            <TabHeader>Problems</TabHeader>
+            <TabHeader>Bài tập</TabHeader>
             <div className="grow overflow-y-scroll">
                 <AnimatePresence>
                     {isLoading && (

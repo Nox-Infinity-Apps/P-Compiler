@@ -43,7 +43,7 @@ export async function compileCode(source: string, lang_id: number = 71) {
         {
             data: Root;
         }
-    >("/submissions?base64_encoded=false&wait=true&fields=*", {
+    >(`/compile/${lang_id}`, {
         language_id: lang_id,
         source_code: source,
     });
