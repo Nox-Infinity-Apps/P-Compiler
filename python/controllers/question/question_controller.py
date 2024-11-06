@@ -24,8 +24,8 @@ class QuestionController:
     def getDetail(self, code: str, payload: dict,course:str):
         data = self.service.get_detail(code, payload,course)
         return Success("success", data=data)
-    async def submit(self, file: UploadFile, code: str, lang: int, payload: dict):
-        sub = await self.service.submit_code(code, file, lang, payload)
+    async def submit(self, file: UploadFile, code: str, lang: int, payload: dict, course: str):
+        sub = await self.service.submit_code(code, file, lang, payload, course)
         if sub is None:
             return BadRequest("fail", "400")
 

@@ -1,10 +1,13 @@
-
+import uuid
+from datetime import datetime
 from typing import Union, List
 
+import psycopg2
 from bs4 import BeautifulSoup
 
 from common.di.manager import injectable, inject
 from dtos.user.user import UserData, RankData
+from services.database.database import DatabaseService
 from utils.env import Environment
 from utils.httpx import cptit_client as cclient
 
@@ -40,6 +43,8 @@ class UserService:
         description = profile_items[8].find('span').text.strip() if profile_items[8].find('span') else ""
 
         user_data = UserData(username, image, account, class_, email, date, gender, location, phone, description)
+        #Insert vào db nếu user chưa tồn tại (không lưu pass đâu nha)
+        DatabaseService.addUser(self.env, user_data)
         return user_data
 
     def getRank(self,course,payload) -> Union[List[RankData], None]:
@@ -57,7 +62,7 @@ class UserService:
         # Parse the HTML
         soup = BeautifulSoup(response.text, 'html.parser')
         # Tìm tất cả các hàng trong bảng
-        rows = soup.find_all('tr', class_=['bg-100th', 'bg--20th', 'bg--50th'])
+        rows = soup.find_all('tr', class_=['bg--10th', 'bg--20th', 'bg--50th'])
         rows += [
             tr for tr in soup.find_all('tr')
             if tr.find_all('td') and tr.find_all('td')[0].get('class') == ['text--middle']

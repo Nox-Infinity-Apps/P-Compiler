@@ -8,6 +8,7 @@ from fastapi import UploadFile
 
 from common.di.manager import injectable, inject
 from dtos.course.course import CourseData
+from services.database.database import DatabaseService
 from utils.env import Environment
 from utils.httpx import cptit_client as cclient
 
@@ -100,7 +101,7 @@ class QuestionService:
             return None
         return _token
 
-    async def submit_code(self, code: str, file: UploadFile, lang: int, payload: dict) \
+    async def submit_code(self, code: str, file: UploadFile, lang: int, payload: dict, course: str) \
             -> Union[bool, None, str, SolutionResponse]:
         content_file = await file.read()
         _token = self.get_submit_token(code, payload)
@@ -160,6 +161,9 @@ class QuestionService:
                                                             or solution_response.solutions[0].result == "RTE"
                                                             or solution_response.solutions[0].result == "CE"
                                                             or solution_response.solutions[0].result == "MLE"):
+                            # Thêm Submitsion vào DB
+                            db = DatabaseService.addSubmitsion(self.env, solution_response.solutions[0],course)
+                            print(db)
                             return solution_response
                     except ValueError as e:
                         print("Không thể parse JSON:", e)
