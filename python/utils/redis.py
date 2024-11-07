@@ -25,4 +25,4 @@ class Cache:
     async def set(cls, key: str, value):
         redis = await cls.get_instance()
         value = orjson.dumps(value)
-        await redis.set(key, value, expire=60 * 60 * 24)
+        await redis.set(key, value, ex=60 * 10)
