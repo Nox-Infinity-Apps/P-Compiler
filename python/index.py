@@ -1,6 +1,8 @@
+import time
 from contextlib import asynccontextmanager
 from urllib.request import Request
 
+import schedule
 import uvicorn
 from fastapi import FastAPI
 from prisma import Prisma
@@ -11,6 +13,8 @@ from uvicorn import logging
 
 from config.index import settings
 from routes.index import router
+from services.database.database import DatabaseService
+from services.mail.mail import EmailService, scheduled_email_task
 from utils.env import environment
 
 app = FastAPI(docs_url="/api/py/docs", openapi_url="/api/py/openapi.json")
@@ -49,5 +53,30 @@ async def prisma_starter():
 
 app.include_router(router)
 
+# Configuration for SMTP
+smtp_config = {
+    'server':environment.email_server,
+    'port': environment.email_port,
+    'password': environment.email_password
+}
+# Đọc nội dung email từ file
+with open('email_template.html', 'r', encoding='utf-8') as file:
+    html_content = file.read()
+email_service = EmailService(smtp_config)
+
+# Chạy các task theo lịch
+schedule.every(1).minutes.do(lambda: scheduled_email_task(environment, email_service,html_content))
+schedule.every().day.at("00:00").do(lambda:DatabaseService.setKeyAfterDay(environment))
+
+def run_scheduled_tasks():
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
+@app.on_event("startup")
+async def startup_event():
+    import threading
+    cron_thread = threading.Thread(target=run_scheduled_tasks, daemon=True)
+    cron_thread.start()
 if __name__ == "__main__":
     uvicorn.run("index:app", port=environment.port, host=settings.APP_HOST, reload=True)

@@ -2,7 +2,7 @@ import uuid
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
-from typing import Union
+from typing import Union, List
 import psycopg2
 from dtos.user.user import UserData, SubmissionStatistics
 from utils.env import Environment
@@ -132,3 +132,52 @@ class DatabaseService:
             print(f"Error: {e}")
             return None
 
+    def setKeyAfterDay(env: Environment) -> Union[str, None]:
+        try:
+            conn = psycopg2.connect(
+                host=env.db_postgres_host,
+                database=env.db_postgres_name,
+                user=env.db_postgres_user,
+                password=env.db_postgres_password,
+            )
+            cur = conn.cursor()
+            cur.execute("UPDATE public.\"RapidAPIKey\" SET is_expired = False")
+            print("Set lại key thành công")
+            conn.commit()
+            cur.close()
+        except Exception as e:
+            print(f"Error: {e}")
+            return None
+
+    def getUserEnableNotify(env: Environment) -> Union[List[str], None]:
+        try:
+            conn = psycopg2.connect(
+                host=env.db_postgres_host,
+                database=env.db_postgres_name,
+                user=env.db_postgres_user,
+                password=env.db_postgres_password,
+            )
+            query = """
+            SELECT DISTINCT u.email
+            FROM submissions s
+            JOIN "User" u ON s.userid = u.id
+            WHERE s.userid NOT IN (
+                SELECT s1.userid
+                FROM submissions s1
+                WHERE s1.date >= (CURRENT_DATE - INTERVAL '1 day') AND s1.result = 'AC'
+            ) 
+            AND u.enable_notify = true;
+            """
+            # Đầu tiên lấy ra những user đã submit và AC trong ngày hôm trước đến nay ( những ng thỏa mãn)
+            # Sau đó lấy ra những user không nằm trong đó và enable_notify = true (k thỏa mãn)
+            cur = conn.cursor()
+            cur.execute(query)
+            user_list = cur.fetchall()
+            print("Lấy danh sách user thành công")
+            print([user[0] for user in user_list])
+            return [user[0] for user in user_list]
+            conn.commit()
+            cur.close()
+        except Exception as e:
+            print(f"Error: {e}")
+            return None
