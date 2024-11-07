@@ -1,3 +1,4 @@
+import json
 import time
 from dataclasses import dataclass
 from typing import Union, List
@@ -9,6 +10,7 @@ from fastapi import UploadFile
 from common.di.manager import injectable, inject
 from utils.env import Environment
 from utils.httpx import cptit_client as cclient
+from utils.redis import Cache
 
 
 @dataclass
@@ -180,7 +182,14 @@ class QuestionService:
         sub_id = td.get_text(strip=True)
         return sub_id
 
-    def get_list_by_course(self, course: int, page: int, payload: dict) -> Union[list[Question] | None]:
+    async def get_list_by_course(self, course: int, page: int, payload: dict) -> Union[list[Question] | None]:
+
+        questions = await Cache.get(f"question_{course}_{page}")
+        if questions:
+            print("Lấy từ redis")
+            return [Question(x.get("status"), x.get("code"), x.get("name"), x.get("group"),
+                             x.get("topic"), x.get("level")) for x in questions]
+        questions = []
         _ = cclient.get("/student/question",
                         headers={
                             "Cookie": payload.get("cookie"),
@@ -200,7 +209,7 @@ class QuestionService:
         soup = BeautifulSoup(response.text, 'html.parser')
         tbody = soup.select_one(
             "div.container-fluid > div.wrapper > div.main--fluid > div.status > div.ques__table__wrapper > table.ques__table > tbody")
-        questions = []
+
         if tbody:
             rows = tbody.find_all('tr')
             for row in rows:
@@ -224,4 +233,5 @@ class QuestionService:
         for question in questions:
             print(
                 f"Status: {question.status}, Code: {question.code}, Name: {question.name}, Group: {question.group}, Topic: {question.topic}, Level: {question.level}")
+        await Cache.set(f"question_{course}_{page}", questions)
         return questions

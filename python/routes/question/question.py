@@ -11,7 +11,7 @@ router = APIRouter(
 
 @router.get("")
 async def question(course: int, page: int, payload: Dict = Depends(parse_jwt)):
-    return questionController.getList(course, page, payload)
+    return await questionController.getList(course, page, payload)
 
 
 @router.post("/submit/{code}")
