@@ -65,13 +65,13 @@ with open('email_template.html', 'r', encoding='utf-8') as file:
 email_service = EmailService(smtp_config)
 
 # Chạy các task theo lịch
-schedule.every(1).minutes.do(lambda: scheduled_email_task(environment, email_service,html_content))
+schedule.every().day.at("09:00").do(lambda: scheduled_email_task(environment, email_service,html_content))
 schedule.every().day.at("00:00").do(lambda:DatabaseService.setKeyAfterDay(environment))
 
 def run_scheduled_tasks():
     while True:
         schedule.run_pending()
-        time.sleep(1)
+        time.sleep(60)
 
 @app.on_event("startup")
 async def startup_event():
