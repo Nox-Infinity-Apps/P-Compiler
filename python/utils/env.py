@@ -16,6 +16,11 @@ class Environment(BaseSettings):
     db_postgres_name: str
     db_postgres_port: int = 5432
     model_config = SettingsConfigDict(env_file=".env")
+    email_sender: str
+    email_password: str
+    email_subject: str
+    email_server: str
+    email_port: int = 587
 
 
 environment = Environment()

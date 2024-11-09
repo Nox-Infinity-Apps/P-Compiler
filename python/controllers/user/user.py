@@ -22,4 +22,12 @@ class UserController:
             return Failed(message="Failed to get rank")
         return Success(message="Success", data=data)
 
+    def getStatistics(self,account, payload, from_date, to_date):
+        data = self.service.getStatistics(account,payload, from_date, to_date)
+        if data is None:
+            return Failed(message="Failed to get statistics")
+        elif type(data) == str:
+            return Failed(message=data)
+        return Success(message="Success", data=data)
+
 userController = UserController()
