@@ -30,4 +30,10 @@ class UserController:
             return Failed(message=data)
         return Success(message="Success", data=data)
 
+    def sendMail(self, payload):
+        data = self.service.sendMail(payload)
+        if data is None:
+            return Failed(message="Failed to send mail")
+        return Success(message="Success", data=data)
+
 userController = UserController()
