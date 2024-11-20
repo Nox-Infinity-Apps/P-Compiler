@@ -24,4 +24,4 @@ COPY . /app/
 
 EXPOSE 2604
 
-CMD ["sh", "-c", "poetry run uvicorn index:app --reload --host 0.0.0.0 --port 2604"]
+CMD ["sh", "-c", "poetry run uvicorn index:app --reload --host 0.0.0.0 --port 2604 --forwarded-allow-ips=\"*\""]

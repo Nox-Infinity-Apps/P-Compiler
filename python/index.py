@@ -72,4 +72,4 @@ async def startup_event():
     cron_thread = threading.Thread(target=run_scheduled_tasks, daemon=True)
     cron_thread.start()
 if __name__ == "__main__":
-    uvicorn.run("index:app", port=environment.port, host=settings.APP_HOST, reload=True)
+    uvicorn.run("index:app", port=environment.port, host=settings.APP_HOST, reload=True, forwarded_allow_ips='*')
