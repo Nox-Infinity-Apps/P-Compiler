@@ -22,6 +22,6 @@ RUN poetry config virtualenvs.create false && poetry install
 
 COPY . /app/
 
-EXPOSE 8000
+EXPOSE 2604
 
-CMD ["sh", "-c", "poetry run uvicorn index:app --reload --host 0.0.0.0 --port 8000"]
+CMD ["sh", "-c", "poetry run uvicorn index:app --reload --host 0.0.0.0 --port 2604"]
