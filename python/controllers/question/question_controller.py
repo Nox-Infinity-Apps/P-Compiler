@@ -17,8 +17,8 @@ class QuestionController:
     def __init__(self, service: QuestionService):
         self.service = service
 
-    def getList(self, course: int, page: int, payload: dict):
-        data = self.service.get_list_by_course(course, page, payload)
+    async def getList(self, course: int, page: int, payload: dict):
+        data = await self.service.get_list_by_course(course, page, payload)
         return Success("success", data=data)
 
     def getDetail(self, code: str, payload: dict,course:str):
