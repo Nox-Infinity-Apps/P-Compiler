@@ -7,7 +7,7 @@ services:
       context: ./python
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "8888:8888"
     environment:
       PYTHONDONTWRITEBYTECODE: "1"
       PYTHONUNBUFFERED: "1"
