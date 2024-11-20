@@ -18,6 +18,7 @@
     "electron:dist:deb": "electron-builder --linux deb",
     "electron:dist:win": "electron-builder --win",
     "electron:build": "tsup",
+    "build:web": "next build",
     "build": "run-s next:build electron:build",
     "dist": "run-s next:build electron:dist",
     "dev": "npm-run-all --parallel electron:dev next:dev",

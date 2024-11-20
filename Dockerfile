@@ -2,23 +2,21 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-COPY package.json ./
+COPY web.package.json package.json
 
 RUN yarn install
 
 COPY . .
 
-RUN yarn build
+RUN yarn run build
 
 RUN yarn install --production --frozen-lockfile
 
 FROM node:18-alpine AS runner
 
-WORKDIR /app
 
 
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/package.json ./
 
