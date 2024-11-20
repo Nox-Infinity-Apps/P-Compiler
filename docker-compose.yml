@@ -11,6 +11,7 @@ services:
     environment:
       PYTHONDONTWRITEBYTECODE: "1"
       PYTHONUNBUFFERED: "1"
+      FORWARDED_ALLOW_IPS: "*"
     command: sh -c "poetry run uvicorn index:app --reload --host 0.0.0.0 --port 2604"
     networks:
       - pcompiler
@@ -23,7 +24,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      NEXT_PUBLIC_URL: "https://api-pcompiler.luyenthiptit.tech/api/py"
+      NEXT_PUBLIC_URL: "=https://api-pcompiler.luyenthiptit.tech/api/py"
       NEXT_PUBLIC_ELECTRON: false
     networks:
       - pcompiler
