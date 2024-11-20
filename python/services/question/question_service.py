@@ -125,8 +125,8 @@ class QuestionService:
                             },
                             data=form_data,
                             files=files)
-        print(payload.get("cookie"))
-        print(resp.status_code)
+        # print(payload.get("cookie"))
+        # print(resp.status_code)
         if resp.status_code != 302:
             return None
         sub_id = self.getStatus(payload)
@@ -140,7 +140,7 @@ class QuestionService:
         json = {
             "id": [sub_id]
         }
-        print("Tim thay id:", sub_id)
+        # print("Tim thay id:", sub_id)
         while time.time() - polling_time <= time_out:
             try:
                 response = cclient.post("/api/solution/status",
@@ -152,7 +152,7 @@ class QuestionService:
                 if response.status_code == 200:
                     try:
                         response_data = response.json()
-                        print(response_data)
+                        # print(response_data)
                         solution_response = SolutionResponse.from_json(response_data)
 
                         if solution_response.solutions and (solution_response.solutions[0].result == "AC"
@@ -165,16 +165,16 @@ class QuestionService:
                                                             or solution_response.solutions[0].result == "MLE"):
                             # Thêm Submitsion vào DB
                             db = DatabaseService.addSubmitsion(self.env, solution_response.solutions[0],course)
-                            print(db)
+                            # print(db)
                             return solution_response
                     except ValueError as e:
-                        print("Không thể parse JSON:", e)
+                         print("Không thể parse JSON:", e)
 
             except httpx.RequestError as e:
-                print(f"Lỗi khi gửi yêu cầu: {e}")
+                 print(f"Lỗi khi gửi yêu cầu: {e}")
             time.sleep(quantum)
             quantum *= 2
-        print("Chưa có kết quả")
+        # print("Chưa có kết quả")
         return None
 
     def getStatus(self, payload: dict):
@@ -196,7 +196,7 @@ class QuestionService:
 
         questions = await Cache.get(f"question_{course}_{page}")
         if questions:
-            print("Lấy từ redis")
+            # print("Lấy từ redis")
             return [Question(x.get("status"), x.get("code"), x.get("name"), x.get("group"),
                              x.get("topic"), x.get("level")) for x in questions]
         questions = []
@@ -240,9 +240,7 @@ class QuestionService:
 
                     question = Question(status, code, name, group, topic, level)
                     questions.append(question)
-        for question in questions:
-            print(
-                f"Status: {question.status}, Code: {question.code}, Name: {question.name}, Group: {question.group}, Topic: {question.topic}, Level: {question.level}")
+
         await Cache.set(f"question_{course}_{page}", questions)
         return questions
 

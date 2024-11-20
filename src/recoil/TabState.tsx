@@ -9,6 +9,13 @@ type TabStateI = {
         code: string;
         problemId: string;
         courseId: string;
+        gemini: {
+            input: string;
+            history: {
+                role: "bot" | "user";
+                message: string;
+            }[];
+        };
     }[];
     activeTab: number;
 };

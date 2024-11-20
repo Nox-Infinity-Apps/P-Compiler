@@ -27,7 +27,7 @@ export default function useRanking(course_id: string | number) {
         queryFn: async () => {
             try {
                 const data = await axiosAPI.get<Root>(
-                    `/user/rank/${course_id}`,
+                    `/user/rank/${course_id || 749}`,
                 );
                 return data.data;
             } catch (err) {

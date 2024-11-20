@@ -2,6 +2,8 @@ const languageCodes = {
     assembly: {
         code: 45,
         title: "Assembly (NASM 2.14.02)",
+        ext: "",
+        plang: 5,
     },
     shell: {
         code: 46,
@@ -18,6 +20,7 @@ const languageCodes = {
     cpp: {
         code: 105,
         title: "C++ (GCC 14.1.0)",
+        ext: "cpp",
     },
     clojure: {
         code: 86,
@@ -83,6 +86,8 @@ const languageCodes = {
         code: 91,
         title: "Java (JDK 17.0.6)",
         course: 744,
+        ext: "java",
+        plang: 3,
     },
     javascript: {
         code: 102,
@@ -132,6 +137,8 @@ const languageCodes = {
         code: 71,
         title: "Python (3.8.1)",
         course: 759,
+        ext: "py",
+        plang: 4,
     },
     r: {
         code: 99,
@@ -166,4 +173,12 @@ const languageCodes = {
         title: "Visual Basic.Net (vbnc 0.0.0.5943)",
     },
 };
-export default languageCodes;
+export default languageCodes as {
+    [key: string]: {
+        code: number;
+        title: string;
+        course?: number;
+        ext?: string;
+        plang?: number;
+    };
+};

@@ -1,4 +1,5 @@
 import OutputTabTerminal from "@/app/(main)/(code)/(codespace)/components/OutputTabTerminal";
+import SubmissionStatus from "@/app/(main)/(code)/(codespace)/components/SubmissionStatus";
 
 const TERMINAL_TABS = [
     {
@@ -7,6 +8,7 @@ const TERMINAL_TABS = [
     },
     {
         title: "Submissions",
+        component: <SubmissionStatus />,
     },
     {
         title: "Output",

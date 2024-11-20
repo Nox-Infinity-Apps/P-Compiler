@@ -13,6 +13,7 @@ type Response = {
 
 export default function useProblems() {
     const [state] = useCodePTITState();
+
     return useQuery({
         queryFn: async () => {
             const data = await axiosAPI.get<Result<Response>>(

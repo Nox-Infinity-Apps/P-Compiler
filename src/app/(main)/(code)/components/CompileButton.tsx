@@ -18,8 +18,8 @@ export default function CompileButton() {
     const runCode = React.useCallback(() => {
         compile({
             source_code: problemState.tab[problemState.activeTab]?.code,
-            inputs: [""],
-            outputs: [""],
+            inputs: ["a"],
+            outputs: ["a"],
         }).then((data) => {
             setState((pre) => ({
                 ...pre,

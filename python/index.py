@@ -1,15 +1,9 @@
 import time
-from contextlib import asynccontextmanager
-from urllib.request import Request
 
 import schedule
 import uvicorn
 from fastapi import FastAPI
-from prisma import Prisma
-from starlette.middleware.base import BaseHTTPMiddleware
 from fastapi.middleware.cors import CORSMiddleware
-from starlette.responses import JSONResponse
-from uvicorn import logging
 
 from config.index import settings
 from routes.index import router
@@ -18,7 +12,6 @@ from services.mail.mail import EmailService, scheduled_email_task
 from utils.env import environment
 
 app = FastAPI(docs_url="/api/py/docs", openapi_url="/api/py/openapi.json")
-prisma = Prisma(auto_register=False)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -28,15 +21,15 @@ app.add_middleware(
 )
 
 
-@asynccontextmanager
-async def prisma_starter():
-    if not prisma.is_connected():
-        await prisma.connect()
-
-    yield
-
-    if prisma.is_connected():
-        await prisma.disconnect()
+# @asynccontextmanager
+# async def prisma_starter():
+#     if not prisma.is_connected():
+#         await prisma.connect()
+#
+#     yield
+#
+#     if prisma.is_connected():
+#         await prisma.disconnect()
 
 
 # class PanicHandlerMiddleware(BaseHTTPMiddleware):

@@ -9,6 +9,7 @@ import useUserInfo from "@/queries/useUserInfo";
 import useCourses from "@/queries/useCourses";
 import useCodePTITState from "@/recoil/CodePTITState";
 import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function BottomBar() {
     const { handleOpenTerminal } = useMainState();
@@ -16,6 +17,7 @@ export default function BottomBar() {
     const [state, setState] = useCodeState();
     const { data } = useUserInfo();
     const { data: courses } = useCourses();
+    const queryClient = useQueryClient();
 
     useEffect(() => {
         const langId = Object.keys(languageCodes).find(
@@ -50,6 +52,9 @@ export default function BottomBar() {
                             ...pre,
                             targetCourse: String(e.target.value) || "",
                         }));
+                        queryClient.refetchQueries({
+                            queryKey: ["SUBMISSIONS"],
+                        });
                     }}
                     value={codeState.targetCourse}
                     className="flex bg-ide_bg items-center text-[0.65rem] rounded-sm px-2 active:outline-none"

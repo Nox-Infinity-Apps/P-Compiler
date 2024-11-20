@@ -6,6 +6,7 @@ import CompileButton from "@/app/(main)/(code)/components/CompileButton";
 import useProblemTabState from "@/recoil/TabState";
 import { useId } from "react";
 import TabButton from "@/app/(main)/(code)/components/TabButton";
+import SubmitButton from "@/app/(main)/(code)/components/SubmitButton";
 
 export default function TopBar({
     className,
@@ -38,11 +39,10 @@ export default function TopBar({
                     ),
                 )}
             </div>
-            {!isElectron && (
-                <div className="pr-4">
-                    <CompileButton />
-                </div>
-            )}
+            <div className="pr-4 flex gap-x-1.5">
+                <CompileButton />
+                <SubmitButton />
+            </div>
         </div>
     );
 }

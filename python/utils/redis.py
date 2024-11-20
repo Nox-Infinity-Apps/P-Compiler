@@ -1,4 +1,5 @@
 import json
+import os
 
 import orjson
 from redis.asyncio import Redis
@@ -10,15 +11,16 @@ class Cache:
     @classmethod
     async def get_instance(cls) -> Redis:
         if cls._instance is None:
-            cls._instance = await Redis.from_url("redis://localhost")
+            cls._instance = await Redis.from_url(os.getenv("REDIS_URL"))
         return cls._instance
 
     @classmethod
     async def get(cls, key: str):
         redis = await cls.get_instance()
         value = await redis.get(key)
-        if value is not None:
-            value = value.decode("utf-8")
+        if value is None:
+            return None
+        value = value.decode("utf-8")
         return json.loads(value)
 
     @classmethod

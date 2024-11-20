@@ -114,7 +114,7 @@ class DatabaseService:
                 # Map quan class SubmissionStatistics
                 return SubmissionStatistics(*res)
         except Exception as e:
-            return print(f"Error: {e}")
+            return # print(f"Error: {e}")
 
     def getUserIdByAccount(env: Environment, account: str) -> Union[str, None]:
         try:
@@ -129,7 +129,7 @@ class DatabaseService:
             user_id = cur.fetchone()
             return user_id[0] if user_id else None
         except Exception as e:
-            print(f"Error: {e}")
+            # print(f"Error: {e}")
             return None
 
     def setKeyAfterDay(env: Environment) -> Union[str, None]:
@@ -142,11 +142,11 @@ class DatabaseService:
             )
             cur = conn.cursor()
             cur.execute("UPDATE public.\"RapidAPIKey\" SET is_expired = False")
-            print("Set lại key thành công")
+            # print("Set lại key thành công")
             conn.commit()
             cur.close()
         except Exception as e:
-            print(f"Error: {e}")
+            # print(f"Error: {e}")
             return None
 
     def getUserEnableNotify(env: Environment) -> Union[List[str], None]:
@@ -173,11 +173,11 @@ class DatabaseService:
             cur = conn.cursor()
             cur.execute(query)
             user_list = cur.fetchall()
-            print("Lấy danh sách user thành công")
-            print([user[0] for user in user_list])
+            # print("Lấy danh sách user thành công")
+            # print([user[0] for user in user_list])
             return [user[0] for user in user_list]
             conn.commit()
             cur.close()
         except Exception as e:
-            print(f"Error: {e}")
+            # print(f"Error: {e}")
             return None

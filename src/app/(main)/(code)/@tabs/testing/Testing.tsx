@@ -31,7 +31,7 @@ export default function Testing() {
         })
             .then((res) => {
                 if (!res.data.std_err?.[0]) {
-                    const newTest = [...test];
+                    const newTest = structuredClone(test);
                     res.data.std_out.forEach((e, i) => {
                         newTest[i].reality_output = e;
                     });
@@ -67,7 +67,7 @@ export default function Testing() {
         <TabContainer>
             <TabHeader>Thử nghiệm bộ Test</TabHeader>
             <div className="px-5 mt-2 grow">
-                <div className="flex flex-col gap-3 h-full overflow-scroll px-2">
+                <div className="flex flex-col gap-3 h-full overflow-y-scroll max-h-[85vh] px-2">
                     {test?.map(({ input, output, reality_output }, i) => (
                         <div key={i} className="flex flex-col gap-2">
                             <p className="uppercase text-xs">Test {i + 1}</p>

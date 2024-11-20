@@ -37,11 +37,11 @@ class LoginService:
         csrf, response = self.get_csrf()
         if csrf is None:
             if self.check_logged(BeautifulSoup(response.text, 'html.parser')):
-                print("vai lon luon")
+                # print("vai lon luon")
                 return self.build_jwt(username, response, True)
             return None
         csrf_token = csrf.get('value')
-        print("CSRF Token: " + csrf_token)
+        # print("CSRF Token: " + csrf_token)
         cclient.follow_redirects = False
         login = cclient.post("/login", data={
             "_token": csrf_token,

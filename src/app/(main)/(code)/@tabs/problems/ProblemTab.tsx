@@ -34,6 +34,10 @@ export default function ProblemTab() {
                         problemName: name,
                         code: "",
                         courseId: course,
+                        gemini: {
+                            input: "",
+                            history: [],
+                        },
                     },
                 ],
                 activeTab: pre.tab.length,
@@ -45,7 +49,7 @@ export default function ProblemTab() {
     return (
         <TabContainer>
             <TabHeader>Bài tập</TabHeader>
-            <div className="grow overflow-y-scroll">
+            <div className="grow overflow-y-scroll max-h-[94vh]">
                 <AnimatePresence>
                     {isLoading && (
                         <motion.div

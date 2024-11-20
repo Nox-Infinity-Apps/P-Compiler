@@ -42,7 +42,7 @@ const Terminal = React.memo(() => {
                     xtermRef.current?.terminal.write(data);
                 },
             );
-    }, []);
+    }, [isElectron]);
 
     React.useEffect(() => {
         xtermRef.current?.terminal.focus();

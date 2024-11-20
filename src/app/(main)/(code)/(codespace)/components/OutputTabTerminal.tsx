@@ -4,7 +4,6 @@ import Loading from "@/components/app/Loading";
 
 export default function OutputTabTerminal() {
     const [state] = useCodeState();
-    console.log(state);
     return (
         <div
             style={{

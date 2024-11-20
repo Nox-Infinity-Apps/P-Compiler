@@ -20,7 +20,7 @@ class GeminiController:
 
     def sendMessage(self, code: str, ask_msg: str, history: list[ChatPart]):
         response = self.service.send_message(code, ask_msg, history)
-        print(response)
+        # print(response)
         return Success(message="success", data=GeminiResponse(response=response))
 
 

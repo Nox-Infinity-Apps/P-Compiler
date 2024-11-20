@@ -48,7 +48,7 @@ export default function SideBar({
             </SideBarTopMenu>
             <div
                 className={cn(
-                    "w-full [&>div>*]:text-[1.3rem] [&>div>*:hover]:text-white mt-4 flex flex-col *:h-12 *:w-full *:flex *:justify-center *:items-center *:text-gray-400",
+                    "w-full relative [&>div>*]:text-[1.3rem] [&>div>*:hover]:text-white mt-4 flex flex-col *:h-12 *:w-full *:flex *:justify-center *:items-center *:text-gray-400",
                 )}
             >
                 {MENU.map(({ icon }, index) => (

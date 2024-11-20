@@ -14,7 +14,7 @@ class GeminiService:
     def send_message(self, code: str, ask_msg: str, chat_history: List[ChatPart]) -> str:
         genai.configure(api_key=API_KEY)
 
-        print(code)
+        # print(code)
         # Create the model
         generation_config = {
             "temperature": 1,
@@ -44,7 +44,7 @@ class GeminiService:
         history = default_chat
         for i in list_chat:
             history.append(self.create_chat(i.role, i.parts[0]))
-        print(history)
+        # print(history)
         return history
 
     def create_chat(self, role: str, msg: str) -> {}:

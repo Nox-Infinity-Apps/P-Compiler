@@ -20,14 +20,14 @@ class EmailService:
         msg['To'] = receiver_emails
         msg['Subject'] = subject
         msg.attach(MIMEText(body, 'html'))
-        print(self.smtp_config)
-        print(sender_email)
+        # print(self.smtp_config)
+        # print(sender_email)
         try:
             with smtplib.SMTP(self.smtp_config['server'], self.smtp_config['port']) as server:
                 server.starttls()
                 server.login(sender_email, self.smtp_config['password'])
                 server.sendmail(sender_email, receiver_emails.split(','), msg.as_string())
-            print(f"Email đã gửi đến {receiver_emails} lúc {datetime.now()}")
+            # print(f"Email đã gửi đến {receiver_emails} lúc {datetime.now()}")
         except Exception as e:
             print(f"Gửi mail thất bại: {e}")
 

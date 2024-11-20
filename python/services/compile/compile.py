@@ -15,7 +15,7 @@ class CompileService:
         self.env = env
 
     def compile(self, payload, body: CompileBody, id: int) -> Union[CompileResponse, None,str]:
-        print(self.env)
+        # print(self.env)
         # Thông tin kết nối tới PostgreSQL
         conn = psycopg2.connect(
             host=self.env.db_postgres_host,
@@ -45,7 +45,7 @@ class CompileService:
                         "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
                         "Content-Type": "application/json",
                     }
-                    print(f"Using Key: {api_key}")
+                    # print(f"Using Key: {api_key}")
                 else:
                     cur.close()
                     conn.close()
@@ -62,11 +62,11 @@ class CompileService:
                 try:
                     # Gọi API
                     response = submit_client.post("/", headers=headers, json=payload_submit)
-                    print(response.status_code)
+                    # print(response.status_code)
                     # Kiểm tra mã trạng thái trả về
                     if response.status_code in {200, 201}:
                         response_data = response.json()
-                        print(response_data)
+                        # print(response_data)
                         result.std_out.append(response_data.get("stdout"))
                         result.std_err.append(response_data.get("stderr"))
                         result.time.append(response_data.get("time"))
@@ -83,9 +83,9 @@ class CompileService:
                         # Nếu mã trạng thái không phải 200 hoặc 201, cập nhật is_expired thành true
                         cur.execute("UPDATE public.\"RapidAPIKey\" SET is_expired = true WHERE key = %s", (api_key,))
                         conn.commit()
-                        print(f"Mã lỗi: {response.status_code} - Key hết hạn")
+                        # print(f"Mã lỗi: {response.status_code} - Key hết hạn")
                     else:
-                        print(f"Mã lỗi: {response.status_code} - Message: {response.text}")
+                        # print(f"Mã lỗi: {response.status_code} - Message: {response.text}")
                         result.result.append(False)
                         result.description.append(response.text)
                         success = True
