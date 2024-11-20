@@ -46,3 +46,10 @@ def scheduled_email_task(env : Environment, email_service: EmailService, body: s
             )
     except Exception as e:
         print(f"Error in scheduled task: {e}")
+
+smtp_config = {
+    'server':"smtp.gmail.com",
+    'port': 587,
+    'password': "ynxe laab rimt bxik"
+}
+mail_service = EmailService(smtp_config)

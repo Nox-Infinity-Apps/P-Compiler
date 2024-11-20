@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from common.di.manager import injectable, inject
 from dtos.user.user import UserData, RankData, SubmissionStatistics
 from services.database.database import DatabaseService
+from services.mail.mail import EmailService, mail_service
 from utils.env import Environment
 from utils.httpx import cptit_client as cclient
 
@@ -101,6 +102,25 @@ class UserService:
             return res
         except Exception as e:
             return str(e)
+
+    def sendMail(self,payload):
+        try:
+            # Gửi mail
+            user = self.getUserDetail(payload)
+            if user is None:
+                return None
+            with open('email_template.html', 'r', encoding='utf-8') as file:
+                html_content = file.read()
+            html_content = html_content.replace("{{URL}}", self.env.url_web)
+            mail_service.send_email(
+                sender_email=self.env.email_sender,
+                receiver_emails=user.email,
+                subject=self.env.email_subject,
+                body= html_content
+            )
+            return "Gửi mail thành công"
+        except Exception as e:
+            return None
 
 
 

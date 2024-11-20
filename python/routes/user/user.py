@@ -18,3 +18,7 @@ async def getRank(course: str, payload: Dict = Depends(parse_jwt)):
 @router.get("/statistics/{account}")
 async def getStatistics(account: str,from_date:str, to_date:str, payload: Dict = Depends(parse_jwt)):
     return userController.getStatistics(account, payload, from_date, to_date)
+
+@router.post("/send_mail")
+async def sendMail(payload: Dict = Depends(parse_jwt)):
+    return userController.sendMail(payload)
