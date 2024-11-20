@@ -182,15 +182,17 @@ class QuestionService:
         sub_id = td.get_text(strip=True)
         return sub_id
 
-    async def get_list_by_course(self, course: int, page: int, payload: dict) -> Union[list[Question] | None]:
+    async def get_list_by_course(self, course: int, payload: dict) -> Union[list[Question] | None]:
 
-        questions = await Cache.get(f"question_{course}_{page}")
+        questions = await Cache.get(f"question_{course}")
         if questions:
             print("Lấy từ redis")
+            print(len(questions))
             return [Question(x.get("status"), x.get("code"), x.get("name"), x.get("group"),
                              x.get("topic"), x.get("level")) for x in questions]
         questions = []
-        _ = cclient.get("/student/question",
+        cclient.follow_redirects = True
+        page_home = cclient.get("/student/question",
                         headers={
                             "Cookie": payload.get("cookie"),
                             "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Mobile Safari/537.36"
@@ -198,40 +200,54 @@ class QuestionService:
                         params={
                             "course": course
                         })
-        response = cclient.get("/student/question",
-                               headers={
-                                   "Cookie": payload.get("cookie"),
-                                   "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Mobile Safari/537.36"
-                               },
-                               params={
-                                   "page": page
-                               })
-        soup = BeautifulSoup(response.text, 'html.parser')
-        tbody = soup.select_one(
-            "div.container-fluid > div.wrapper > div.main--fluid > div.status > div.ques__table__wrapper > table.ques__table > tbody")
+        soup = BeautifulSoup(page_home.text, 'html.parser')
 
-        if tbody:
-            rows = tbody.find_all('tr')
-            for row in rows:
-                cols = row.find_all('td')
-                if len(cols) >= 7:
-                    code = cols[2].text.strip()  # Mã
-                    name = cols[3].text.strip()  # Tên
-                    group = cols[4].text.strip()  # Nhóm
-                    topic = cols[5].text.strip()  # Chủ đề
-                    level = int(cols[6].text.strip())  # Độ khó
+        pagination_container = soup.find('div', class_='d-flex mx-auto justify-content-center').find('ul',
+                                                                                                     class_='pagination')
+        page_items = pagination_container.find_all('li', class_='page-item' or 'page-item active')
 
-                    if 'bg--10th' in row.get('class', []):
-                        status = 1
-                    elif 'bg--50th' in row.get('class', []):
-                        status = 0
-                    else:
-                        status = -1
+        for page_item in page_items[1:len(page_items) - 1]:
+            page_link = page_item.find('a', class_='page-link')
+            if page_link is None:
+                page_link = page_item.find('span', class_='page-link')
+            if page_link:
+                print(f"Đang lấy trang {page_link.text.strip()}")
+                response = cclient.get("/student/question",
+                                       headers={
+                                           "Cookie": payload.get("cookie"),
+                                           "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Mobile Safari/537.36"
+                                       },
+                                       params={
+                                           "page": int(page_link.text.strip()),
+                                       })
+                soup = BeautifulSoup(response.text, 'html.parser')
+                tbody = soup.select_one(
+                    "div.container-fluid > div.wrapper > div.main--fluid > div.status > div.ques__table__wrapper > table.ques__table > tbody")
 
-                    question = Question(status, code, name, group, topic, level)
-                    questions.append(question)
+                if tbody:
+                    rows = tbody.find_all('tr')
+                    for row in rows:
+                        cols = row.find_all('td')
+                        if len(cols) >= 7:
+                            code = cols[2].text.strip()  # Mã
+                            name = cols[3].text.strip()  # Tên
+                            group = cols[4].text.strip()  # Nhóm
+                            topic = cols[5].text.strip()  # Chủ đề
+                            level = int(cols[6].text.strip())  # Độ khó
+
+                            if 'bg--10th' in row.get('class', []):
+                                status = 1
+                            elif 'bg--50th' in row.get('class', []):
+                                status = 0
+                            else:
+                                status = -1
+
+                            question = Question(status, code, name, group, topic, level)
+                            questions.append(question)
         for question in questions:
             print(
                 f"Status: {question.status}, Code: {question.code}, Name: {question.name}, Group: {question.group}, Topic: {question.topic}, Level: {question.level}")
-        await Cache.set(f"question_{course}_{page}", questions)
+        await Cache.set(f"question_{course}", questions)
+
+        print(len(questions))
         return questions

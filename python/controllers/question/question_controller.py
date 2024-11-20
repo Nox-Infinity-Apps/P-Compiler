@@ -17,8 +17,8 @@ class QuestionController:
     def __init__(self, service: QuestionService):
         self.service = service
 
-    async def getList(self, course: int, page: int, payload: dict):
-        data = await self.service.get_list_by_course(course, page, payload)
+    async def getList(self, course: int, payload: dict):
+        data = await self.service.get_list_by_course(course, payload)
         return Success("success", data=data)
 
     async def submit(self, file: UploadFile, code: str, lang: int, payload: dict):
