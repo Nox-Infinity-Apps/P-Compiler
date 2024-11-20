@@ -11,7 +11,7 @@ services:
     environment:
       PYTHONDONTWRITEBYTECODE: "1"
       PYTHONUNBUFFERED: "1"
-    command: sh -c "poetry run uvicorn index:app --reload --host 0.0.0.0 --port 8000"
+    command: sh -c "poetry run uvicorn index:app --reload --host 0.0.0.0 --port 2604"
     networks:
       - pcompiler
 
