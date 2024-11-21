@@ -24,7 +24,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      NEXT_PUBLIC_URL: "=https://api-pcompiler.luyenthiptit.tech/api/py"
+      NEXT_PUBLIC_URL: "http://116.118.51.244:2604/api/py"
       NEXT_PUBLIC_ELECTRON: false
     networks:
       - pcompiler
