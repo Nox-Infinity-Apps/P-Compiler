@@ -33,7 +33,7 @@ class Cache:
         redis = await cls.get_instance()
         try:
             serialized_value = orjson.dumps(value)  # Sử dụng orjson để serialize
-            await redis.set(key, serialized_value, ex=60*60*24)  # Lưu vào Redis
+            await redis.set(key, serialized_value, ex=60*5)  # Lưu vào Redis
         except orjson.JSONEncodeError as e:
             # Log lỗi nếu dữ liệu không thể serialize
             print(f"Error serializing value for key {key}: {e}")
