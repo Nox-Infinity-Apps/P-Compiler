@@ -26,7 +26,7 @@ const createWindow = () => {
         ...(isMac
             ? [
                   {
-                      label: app.name,
+                      label: "P-Compiler",
                       submenu: [
                           { role: "about" },
                           { type: "separator" },
@@ -41,7 +41,6 @@ const createWindow = () => {
                   },
               ]
             : []),
-        // { role: 'fileMenu' }
         {
             label: "File",
             submenu: [isMac ? { role: "close" } : { role: "quit" }],
@@ -129,8 +128,8 @@ const createWindow = () => {
         },
     ];
 
-    //const menu = Menu.buildFromTemplate(template as any);
-    //Menu.setApplicationMenu(menu);
+    // const menu = Menu.buildFromTemplate(template as any);
+    // Menu.setApplicationMenu(menu);
 
     mainWindow.on("ready-to-show", () => mainWindow.show());
 

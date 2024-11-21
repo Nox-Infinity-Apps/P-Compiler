@@ -39,10 +39,12 @@ export default function TopBar({
                     ),
                 )}
             </div>
-            <div className="pr-4 flex gap-x-1.5">
-                <CompileButton />
-                <SubmitButton />
-            </div>
+            {!isElectron && (
+                <div className="pr-4 flex gap-x-1.5">
+                    <CompileButton />
+                    <SubmitButton />
+                </div>
+            )}
         </div>
     );
 }
