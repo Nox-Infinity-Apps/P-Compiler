@@ -8,6 +8,8 @@ from bs4 import BeautifulSoup
 from fastapi import UploadFile
 
 from common.di.manager import injectable, inject
+from dtos.course.course import CourseData
+from services.database.database import DatabaseService
 from utils.env import Environment
 from utils.httpx import cptit_client as cclient
 from utils.redis import Cache
@@ -21,6 +23,11 @@ class Question:
     group: str
     topic: str
     level: int
+
+@dataclass
+class QuestionDetail :
+    hmtl : str
+    languages : List[CourseData]
 
 
 @dataclass
@@ -167,6 +174,7 @@ class QuestionService:
         print("Chưa có kết quả")
         return None
 
+
     def getStatus(self, payload: dict):
         history = cclient.get("/student/history",
                               headers={
@@ -251,3 +259,32 @@ class QuestionService:
 
         print(len(questions))
         return questions
+
+    def get_detail(self, code: str, payload: dict,course : str) -> Union[QuestionDetail | None]:
+        _ = cclient.get("student/question?course=" + course, headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+            "Cookie": payload["cookie"],
+        })
+        response = cclient.get(f"/student/question/{code}", headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+            "Cookie": payload["cookie"],
+        })
+        soup = BeautifulSoup(response.text, 'html.parser')
+        # Tìm tất cả các thẻ HTML có class 'submit__nav', 'submit__des', 'submit__req'
+        elements = soup.find_all(class_=["submit__nav", "submit__des", "submit__req"])
+
+        # Tạo một div mới để bọc tất cả các thẻ đã tìm thấy
+        wrapper_div = soup.new_tag('div')
+
+        for element in elements:
+            wrapper_div.append(element)
+
+        # Lấy thẻ select
+        select_tag = soup.find('select', id='compiler')
+
+        # Tạo danh sách {value, name}
+        options : List[CourseData] = [{'value': option['value'], 'name': option.text} for option in select_tag.find_all('option')]
+
+        # Trả về nội dung của div đã bọc
+
+        return QuestionDetail(str(wrapper_div), options)
