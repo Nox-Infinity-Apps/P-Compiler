@@ -6,8 +6,8 @@ export default function TopBar() {
     return (
         <div className="font-medium h-9 bg-top-pbar flex justify-end w-full items-center px-2 gap-x-4 py-0.5">
             <div className="pr-4 flex gap-x-1.5">
-                <CompileButton />
-                <SubmitButton />
+                {/*<CompileButton />*/}
+                {/*<SubmitButton />*/}
             </div>
             <img
                 src="https://picsum.photos/200"
