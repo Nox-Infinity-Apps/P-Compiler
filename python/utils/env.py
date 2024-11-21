@@ -22,7 +22,7 @@ class Environment(BaseSettings):
     email_server: str
     email_port: int = 587
     redis_url: str
-    url_web : str
+    url_web: str
 
 
 environment = Environment()

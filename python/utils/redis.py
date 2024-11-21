@@ -4,15 +4,18 @@ import os
 import orjson
 from redis.asyncio import Redis
 
+from common.di.manager import inject
+from utils.env import Environment, environment
+
 
 class Cache:
     _instance: Redis = None
 
     @classmethod
-    async def get_instance(cls) -> Redis:
-        if cls._instance is None:
-            cls._instance = await Redis.from_url(os.getenv("REDIS_URL"))
-        return cls._instance
+    async def get_instance(self) -> Redis:
+        if self._instance is None:
+            self._instance = await Redis.from_url(environment.redis_url)
+        return self._instance
 
     @classmethod
     async def get(cls, key: str):
