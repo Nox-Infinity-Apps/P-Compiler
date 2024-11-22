@@ -15,9 +15,20 @@ export default function BottomBar() {
     const { handleOpenTerminal } = useMainState();
     const [codeState, setCodeState] = useCodePTITState();
     const [state, setState] = useCodeState();
+
     const { data } = useUserInfo();
-    const { data: courses } = useCourses();
+    const { data: courses, isLoading: isLoadingCourse } = useCourses();
     const queryClient = useQueryClient();
+
+    useEffect(() => {
+        if (isLoadingCourse) return;
+        if (courses?.data && !codeState.targetCourse) {
+            setCodeState((pre) => ({
+                ...pre,
+                targetCourse: courses.data[0].value,
+            }));
+        }
+    }, [courses?.data, isLoadingCourse, setCodeState]);
 
     useEffect(() => {
         const langId = Object.keys(languageCodes).find(
