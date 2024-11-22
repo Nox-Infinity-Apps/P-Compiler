@@ -24,10 +24,11 @@ class Question:
     topic: str
     level: int
 
+
 @dataclass
-class QuestionDetail :
-    hmtl : str
-    languages : List[CourseData]
+class QuestionDetail:
+    hmtl: str
+    languages: List[CourseData]
 
 
 @dataclass
@@ -174,7 +175,6 @@ class QuestionService:
         print("Chưa có kết quả")
         return None
 
-
     def getStatus(self, payload: dict):
         history = cclient.get("/student/history",
                               headers={
@@ -190,8 +190,9 @@ class QuestionService:
         sub_id = td.get_text(strip=True)
         return sub_id
 
-    async def get_list_by_course(self, course: int, payload: dict) -> Union[list[Question] | None]:
-
+    async def get_list_by_course(self, course: Union[int, None], payload: dict) -> Union[list[Question] | None]:
+        if course is None:
+            course = 0
         questions = await Cache.get(f"question_{course}")
         if questions:
             print("Lấy từ redis")
@@ -201,13 +202,13 @@ class QuestionService:
         questions = []
         cclient.follow_redirects = True
         page_home = cclient.get("/student/question",
-                        headers={
-                            "Cookie": payload.get("cookie"),
-                            "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Mobile Safari/537.36"
-                        },
-                        params={
-                            "course": course
-                        })
+                                headers={
+                                    "Cookie": payload.get("cookie"),
+                                    "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Mobile Safari/537.36"
+                                },
+                                params={
+                                    "course": course
+                                })
         soup = BeautifulSoup(page_home.text, 'html.parser')
 
         pagination_container = soup.find('div', class_='d-flex mx-auto justify-content-center').find('ul',
@@ -260,7 +261,9 @@ class QuestionService:
         print(len(questions))
         return questions
 
-    def get_detail(self, code: str, payload: dict,course : str) -> Union[QuestionDetail | None]:
+    def get_detail(self, code: str, payload: dict, course: str) -> Union[QuestionDetail | None]:
+        if code is None:
+            code = ""
         _ = cclient.get("student/question?course=" + course, headers={
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
             "Cookie": payload["cookie"],
@@ -283,7 +286,8 @@ class QuestionService:
         select_tag = soup.find('select', id='compiler')
 
         # Tạo danh sách {value, name}
-        options : List[CourseData] = [{'value': option['value'], 'name': option.text} for option in select_tag.find_all('option')]
+        options: List[CourseData] = [{'value': option['value'], 'name': option.text} for option in
+                                     select_tag.find_all('option')]
 
         # Trả về nội dung của div đã bọc
 

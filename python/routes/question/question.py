@@ -10,7 +10,7 @@ router = APIRouter(
 
 
 @router.get("")
-async def question(course: int, payload: Dict = Depends(parse_jwt)):
+async def question(course: Union[int, None], payload: Dict = Depends(parse_jwt)):
     return await questionController.getList(course, payload)
 
 
@@ -19,5 +19,5 @@ async def submit_question(code: str, lang: int, file: UploadFile, payload: Dict 
     return await questionController.submit(file, code, lang, payload)
 
 @router.get("/{code}/{course}")
-async def questionDetail(code: str,course :str, payload: Dict = Depends(parse_jwt)):
+async def questionDetail(code: str,course: Union[str, None],  payload: Dict = Depends(parse_jwt)):
     return questionController.getDetail(code, payload,course)

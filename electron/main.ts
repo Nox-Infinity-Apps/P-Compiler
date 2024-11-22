@@ -128,14 +128,11 @@ const createWindow = () => {
         },
     ];
 
-    // const menu = Menu.buildFromTemplate(template as any);
-    // Menu.setApplicationMenu(menu);
-
     mainWindow.on("ready-to-show", () => mainWindow.show());
 
     const loadURL = async () => {
         if (is.dev) {
-            mainWindow.loadURL("http://116.118.51.244:3000");
+            mainWindow.loadURL("http://localhost:3000");
         } else {
             try {
                 const port = await startNextJSServer();

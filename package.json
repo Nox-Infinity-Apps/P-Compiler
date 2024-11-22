@@ -7,11 +7,10 @@
   "private": true,
   "main": "build/main.js",
   "scripts": {
-    "next:dev": "npx concurrently \"next dev\" \"npm run fastapi-dev\"",
+    "next:dev": "next dev",
     "next:build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "electron-builder install-app-deps",
     "pip:install": "pip3 install -r python/requirements.txt --break-system-packages && cd python && poetry env use python3 && poetry install",
     "pipw:install": "pip install -r python/requirements.txt --break-system-packages && cd python && poetry env use py && poetry install",
     "electron:dist": "electron-builder --dir",
@@ -21,7 +20,7 @@
     "build:web": "next build",
     "build": "run-s next:build electron:build",
     "dist": "run-s next:build electron:dist",
-    "dev": "npm-run-all --parallel electron:dev next:dev",
+    "dev": "npm-run-all --parallel next:dev electron:dev",
     "electron:build_watch": "tsup --watch",
     "electron:dev": "npm-run-all --parallel electron:build_watch electron:watch",
     "electron:watch": "cross-env NODE_ENV='development' nodemon",
@@ -73,7 +72,7 @@
     "@types/react-dom": "^18",
     "cross-env": "^7.0.3",
     "electron": "^32.1.2",
-    "electron-builder": "^22.14.13",
+    "electron-builder": "^25.1.8",
     "eslint": "^8",
     "eslint-config-next": "14.2.13",
     "nodemon": "^3.1.7",
@@ -86,17 +85,18 @@
     "asar": true,
     "executableName": "PCode",
     "appId": "com.noxinfinity.pcode",
+    "productName": "P-Code",
     "mac": {
       "category": "public.app-category.productivity",
       "icon": "./icons/icon.icns",
-        "target": [
-          {
-            "target": "dmg",
-            "arch": [
-              "arm64"
-            ]
-          }
-        ]
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ]
     },
     "asarUnpack": [
       "node_modules/next",
